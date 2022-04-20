@@ -18,7 +18,7 @@
 <body class="wrapper">
     <header>
         <div class="left">
-            <img class="mark" src="resources/img/logo.png" />       
+            <img class="mark" src="resources/img/logo.png" />
             <div class="logo">Seattle Library</div>
         </div>
         <div class="right">
@@ -74,7 +74,6 @@
                 <button type="submit" id="add-btn" class="btn_addBook">登録</button>
             </div>
         </form>
-        </div>
     </main>
 </body>
 </html>
