@@ -48,7 +48,6 @@ public class LoginController {
 
         // メアドとパスワードに一致するユーザー取得
         UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
-        System.out.println(selectedUserInfo);
 
         // ユーザーが存在すればログイン、存在しなければエラー
         if (Objects.isNull(selectedUserInfo)) {
