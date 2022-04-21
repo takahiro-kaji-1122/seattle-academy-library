@@ -66,10 +66,13 @@ public class BooksService {
     	String sql = "";
     	String thumbnailName = bookInfo.getThumbnailName() != null ? "'" + bookInfo.getThumbnailName() + "'" : "NULL";
     	String thumbnailUrl = bookInfo.getThumbnailUrl() != null ? "'" + bookInfo.getThumbnailUrl() + "'" : "NULL";
-    	sql = "INSERT INTO books (title, author,publisher,thumbnail_name,thumbnail_url,reg_date,upd_date) VALUES ('"
-    			+ bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "',"
+    	sql = "INSERT INTO books (title, author,publisher,publish_date,thumbnail_name,thumbnail_url,isbn,description,reg_date,upd_date) VALUES ('"
+    			+ bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "','"
+    			+ bookInfo.getPublishDate() + "',"
     			+ thumbnailName + ","
     			+ thumbnailUrl + ","
+    			+ bookInfo.getIsbn() + ",'"
+    			+ bookInfo.getDescription() + "',"
     			+ "now(),"
     			+ "now())";
 
@@ -85,4 +88,15 @@ public class BooksService {
     	String sql = "delete from books where id = " + bookId;
     	jdbcTemplate.update(sql);
     }
+
+    /**
+     * booksテーブルの最大のidを取得する
+     * 
+     * @return bookId 書籍ID
+     */
+	public int getLatestBookId() {
+		String sql = "SELECT MAX(id) FROM books;";
+		int bookId = jdbcTemplate.queryForObject(sql, Integer.class);
+		return bookId;
+	}
 }
