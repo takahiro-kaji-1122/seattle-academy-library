@@ -63,11 +63,12 @@ public class BooksService {
 	public void registBook(BookDetailsInfo bookInfo) {
 
 		String sql = "";
-		String thumbnailName = bookInfo.getThumbnailName() != null ? "'" + bookInfo.getThumbnailName() + "'" : "NULL";
-		String thumbnailUrl = bookInfo.getThumbnailUrl() != null ? "'" + bookInfo.getThumbnailUrl() + "'" : "NULL";
+		String thumbnailName = bookInfo.getThumbnailName() == null ? "NULL" : "'" + bookInfo.getThumbnailName() + "'";
+		String thumbnailUrl = bookInfo.getThumbnailUrl() == null ? "NULL" : "'" + bookInfo.getThumbnailUrl() + "'";
+		String isbn = bookInfo.getIsbn().equals("") ? "NULL" : bookInfo.getIsbn();
 		sql = "INSERT INTO books (title, author,publisher,publish_date,thumbnail_name,thumbnail_url,isbn,description,reg_date,upd_date) VALUES ('"
 				+ bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "','"
-				+ bookInfo.getPublishDate() + "'," + thumbnailName + "," + thumbnailUrl + "," + bookInfo.getIsbn()
+				+ bookInfo.getPublishDate() + "'," + thumbnailName + "," + thumbnailUrl + "," + isbn
 				+ ",'" + bookInfo.getDescription() + "'," + "now()," + "now())";
 
 		jdbcTemplate.update(sql);

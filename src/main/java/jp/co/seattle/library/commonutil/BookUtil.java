@@ -23,7 +23,7 @@ public class BookUtil {
 
 		String isbn = String.valueOf(bookInfo.getIsbn());
 		// ISBNのバリデーションチェック
-		if (!isValidIsbn(isbn)) {
+		if (!isbn.isEmpty() && !isValidIsbn(isbn)) {
 			errorList.add(ISBN_ERROR);
 		}
 
