@@ -16,73 +16,82 @@ import jp.co.seattle.library.rowMapper.BookInfoRowMapper;
 /**
  * 書籍サービス
  * 
- *  booksテーブルに関する処理を実装する
+ * booksテーブルに関する処理を実装する
  */
 @Service
 public class BooksService {
-    final static Logger logger = LoggerFactory.getLogger(BooksService.class);
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+	final static Logger logger = LoggerFactory.getLogger(BooksService.class);
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
-    /**
-     * 書籍リストを取得する
-     *
-     * @return 書籍リスト
-     */
-    public List<BookInfo> getBookList() {
+	/**
+	 * 書籍リストを取得する
+	 *
+	 * @return 書籍リスト
+	 */
+	public List<BookInfo> getBookList() {
 
-        // TODO 取得したい情報を取得するようにSQLを修正
-        List<BookInfo> getedBookList = jdbcTemplate.query(
-                "select id, thumbnail_url, title, author, publisher, publish_date from books order by title",
-                new BookInfoRowMapper());
+		// TODO 取得したい情報を取得するようにSQLを修正
+		List<BookInfo> getedBookList = jdbcTemplate.query(
+				"select id, thumbnail_url, title, author, publisher, publish_date from books order by title",
+				new BookInfoRowMapper());
 
-        return getedBookList;
-    }
+		return getedBookList;
+	}
 
-    /**
-     * 書籍IDに紐づく書籍詳細情報を取得する
-     *
-     * @param bookId 書籍ID
-     * @return 書籍情報
-     */
-    public BookDetailsInfo getBookInfo(int bookId) {
+	/**
+	 * 書籍IDに紐づく書籍詳細情報を取得する
+	 *
+	 * @param bookId 書籍ID
+	 * @return 書籍情報
+	 */
+	public BookDetailsInfo getBookInfo(int bookId) {
 
-        // JSPに渡すデータを設定する
-        String sql = "SELECT * FROM books where id ="
-                + bookId;
+		// JSPに渡すデータを設定する
+		String sql = "SELECT * FROM books where id =" + bookId;
 
-        BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
+		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
 
-        return bookDetailsInfo;
-    }
+		return bookDetailsInfo;
+	}
 
-    /**
-     * 書籍を登録する
-     *
-     * @param bookInfo 書籍情報
-     */
-    public void registBook(BookDetailsInfo bookInfo) {
+	/**
+	 * 書籍を登録する
+	 *
+	 * @param bookInfo 書籍情報
+	 */
+	public void registBook(BookDetailsInfo bookInfo) {
 
-    	String sql = "";
-    	String thumbnailName = bookInfo.getThumbnailName() != null ? "'" + bookInfo.getThumbnailName() + "'" : "NULL";
-    	String thumbnailUrl = bookInfo.getThumbnailUrl() != null ? "'" + bookInfo.getThumbnailUrl() + "'" : "NULL";
-    	sql = "INSERT INTO books (title, author,publisher,thumbnail_name,thumbnail_url,reg_date,upd_date) VALUES ('"
-    			+ bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "',"
-    			+ thumbnailName + ","
-    			+ thumbnailUrl + ","
-    			+ "now(),"
-    			+ "now())";
+		String sql = "";
+		String thumbnailName = bookInfo.getThumbnailName() == null ? "NULL" : "'" + bookInfo.getThumbnailName() + "'";
+		String thumbnailUrl = bookInfo.getThumbnailUrl() == null ? "NULL" : "'" + bookInfo.getThumbnailUrl() + "'";
+		String isbn = bookInfo.getIsbn().equals("") ? "NULL" : bookInfo.getIsbn();
+		sql = "INSERT INTO books (title, author,publisher,publish_date,thumbnail_name,thumbnail_url,isbn,description,reg_date,upd_date) VALUES ('"
+				+ bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "','"
+				+ bookInfo.getPublishDate() + "'," + thumbnailName + "," + thumbnailUrl + "," + isbn
+				+ ",'" + bookInfo.getDescription() + "'," + "now()," + "now())";
 
-        jdbcTemplate.update(sql);
-    }
-    
-    /**
-     * 書籍を削除する
-     * 
-     * @param bookId 書籍ID
-     */
-    public void deleteBook(int bookId) {
-    	String sql = "delete from books where id = " + bookId;
-    	jdbcTemplate.update(sql);
-    }
+		jdbcTemplate.update(sql);
+	}
+
+	/**
+	 * 書籍を削除する
+	 * 
+	 * @param bookId 書籍ID
+	 */
+	public void deleteBook(int bookId) {
+		String sql = "delete from books where id = " + bookId;
+		jdbcTemplate.update(sql);
+	}
+
+	/**
+	 * booksテーブルの最大のidを取得する
+	 * 
+	 * @return bookId 書籍ID
+	 */
+	public int getLatestBookId() {
+		String sql = "SELECT MAX(id) FROM books;";
+		int bookId = jdbcTemplate.queryForObject(sql, Integer.class);
+		return bookId;
+	}
 }
