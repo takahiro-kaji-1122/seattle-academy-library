@@ -101,7 +101,7 @@ public class AddBooksController {
 
 		model.addAttribute("resultMessage", "登録完了");
 
-		// TODO 登録した書籍の詳細情報を表示するように実装
+		// 登録した書籍の詳細情報を表示する
 		int latestBookId = booksService.getLatestBookId();
 		BookDetailsInfo registedBookInfo = booksService.getBookInfo(latestBookId);
 
