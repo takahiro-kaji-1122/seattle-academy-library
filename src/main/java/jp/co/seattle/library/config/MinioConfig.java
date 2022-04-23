@@ -12,23 +12,22 @@ import io.minio.MinioClient;
 @PropertySource({ "classpath:/minio.properties" })
 public class MinioConfig {
 
-    @Autowired
-    private Environment environment;
+	@Autowired
+	private Environment environment;
 
-    @Bean
-    public MinioClient minioClient() {
+	@Bean
+	public MinioClient minioClient() {
 
-        final MinioClient minioClient = MinioClient.builder()
-                .endpoint(environment.getProperty("s3.url"), Integer.parseInt(environment.getProperty("s3.port")),
-                        false)
-                .credentials(environment.getProperty("s3.access-id"), environment.getProperty("s3.secret-key"))
-                .region("ap-northeast-1")
-                .build();
-        return minioClient;
-    }
+		final MinioClient minioClient = MinioClient.builder()
+				.endpoint(environment.getProperty("s3.url"), Integer.parseInt(environment.getProperty("s3.port")),
+						false)
+				.credentials(environment.getProperty("s3.access-id"), environment.getProperty("s3.secret-key"))
+				.region("ap-northeast-1").build();
+		return minioClient;
+	}
 
-    public String getMinioInfo(String key) {
-        return environment.getProperty(key);
+	public String getMinioInfo(String key) {
+		return environment.getProperty(key);
 
-    }
+	}
 }

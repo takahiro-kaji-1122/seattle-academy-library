@@ -17,34 +17,31 @@ import jp.co.seattle.library.service.BooksService;
 /**
  * 削除コントローラー
  */
-@Controller //APIの入り口
+@Controller // APIの入り口
 public class DeleteBookController {
-    final static Logger logger = LoggerFactory.getLogger(DeleteBookController.class);
-    
-    @Autowired
-    private BooksService booksService;
+	final static Logger logger = LoggerFactory.getLogger(DeleteBookController.class);
 
-    /**
-     * 対象書籍を削除する
-     *
-     * @param locale ロケール情報
-     * @param bookId 書籍ID
-     * @param model モデル情報
-     * @return 遷移先画面名
-     */
-    @Transactional
-    @RequestMapping(value = "/deleteBook", method = RequestMethod.POST)
-    public String deleteBook(
-            Locale locale,
-            @RequestParam("bookId") Integer bookId,
-            Model model) {
-        logger.info("Welcome delete! The client locale is {}.", locale);
-        
-        booksService.deleteBook(bookId);
+	@Autowired
+	private BooksService booksService;
 
-        model.addAttribute("bookList", booksService.getBookList());
-        return "home";
+	/**
+	 * 対象書籍を削除する
+	 *
+	 * @param locale ロケール情報
+	 * @param bookId 書籍ID
+	 * @param model  モデル情報
+	 * @return 遷移先画面名
+	 */
+	@Transactional
+	@RequestMapping(value = "/deleteBook", method = RequestMethod.POST)
+	public String deleteBook(Locale locale, @RequestParam("bookId") Integer bookId, Model model) {
+		logger.info("Welcome delete! The client locale is {}.", locale);
 
-    }
+		booksService.deleteBook(bookId);
+
+		model.addAttribute("bookList", booksService.getBookList());
+		return "home";
+
+	}
 
 }

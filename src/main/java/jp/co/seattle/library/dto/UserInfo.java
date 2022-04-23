@@ -12,22 +12,22 @@ import lombok.Data;
 @Data
 public class UserInfo {
 
-    private int userId;
+	private int userId;
 
-    private String email;
+	private String email;
 
-    private String password;
+	private String password;
 
-    private String passwordCheck;
+	private String passwordCheck;
 
-    public UserInfo() {
+	public UserInfo() {
 
-    }
+	}
 
-    public UserInfo(int userId, String email, String password, String passwordCheck) {
-        this.userId = userId;
-        this.email = email;
-        this.password = password;
-    }
+	public UserInfo(int userId, String email, String password, String passwordCheck) {
+		this.userId = userId;
+		this.email = email;
+		this.password = password;
+	}
 
 }
