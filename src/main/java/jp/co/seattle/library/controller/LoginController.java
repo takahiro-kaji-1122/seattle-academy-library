@@ -20,43 +20,40 @@ import jp.co.seattle.library.service.UsersService;
  */
 @Controller /** APIの入り口 */
 public class LoginController {
-    final static Logger logger = LoggerFactory.getLogger(LoginController.class);
+	final static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @Autowired
-    private BooksService booksService;
-    @Autowired
-    private UsersService usersService;
+	@Autowired
+	private BooksService booksService;
+	@Autowired
+	private UsersService usersService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String first(Model model) {
-        return "login"; //jspファイル名
-    }
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String first(Model model) {
+		return "login"; // jspファイル名
+	}
 
-    /**
-     * ログイン処理
-     *
-     * @param email メールアドレス
-     * @param password パスワード
-     * @param model
-     * @return　ホーム画面に遷移
-     */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(
-            @RequestParam("email") String email,
-            @RequestParam("password") String password,
-            Model model) {
+	/**
+	 * ログイン処理
+	 *
+	 * @param email    メールアドレス
+	 * @param password パスワード
+	 * @param model
+	 * @return ホーム画面に遷移
+	 */
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
 
-        // メアドとパスワードに一致するユーザー取得
-        UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
+		// メアドとパスワードに一致するユーザー取得
+		UserInfo selectedUserInfo = usersService.selectUserInfo(email, password);
 
-        // ユーザーが存在すればログイン、存在しなければエラー
-        if (Objects.isNull(selectedUserInfo)) {
-        	model.addAttribute("errorMessage", "メールアドレスとパスワードが一致しません");
-        	return "login";
-        } else {
-        	// 本の情報を取得して画面側に渡す
-        	model.addAttribute("bookList", booksService.getBookList());
-        	return "home";
-        }
-    }
+		// ユーザーが存在すればログイン、存在しなければエラー
+		if (Objects.isNull(selectedUserInfo)) {
+			model.addAttribute("errorMessage", "メールアドレスとパスワードが一致しません");
+			return "login";
+		} else {
+			// 本の情報を取得して画面側に渡す
+			model.addAttribute("bookList", booksService.getBookList());
+			return "home";
+		}
+	}
 }

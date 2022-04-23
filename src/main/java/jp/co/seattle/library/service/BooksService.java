@@ -68,8 +68,8 @@ public class BooksService {
 		String isbn = bookInfo.getIsbn().equals("") ? "NULL" : bookInfo.getIsbn();
 		sql = "INSERT INTO books (title, author,publisher,publish_date,thumbnail_name,thumbnail_url,isbn,description,reg_date,upd_date) VALUES ('"
 				+ bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "','"
-				+ bookInfo.getPublishDate() + "'," + thumbnailName + "," + thumbnailUrl + "," + isbn
-				+ ",'" + bookInfo.getDescription() + "'," + "now()," + "now())";
+				+ bookInfo.getPublishDate() + "'," + thumbnailName + "," + thumbnailUrl + "," + isbn + ",'"
+				+ bookInfo.getDescription() + "'," + "now()," + "now())";
 
 		jdbcTemplate.update(sql);
 	}

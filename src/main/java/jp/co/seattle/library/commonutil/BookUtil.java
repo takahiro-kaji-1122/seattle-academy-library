@@ -17,6 +17,12 @@ public class BookUtil {
 	private static final String ISBN_ERROR = "ISBNの桁数または半角数字が正しくありません";
 	private static final String PUBLISHDATE_ERROR = "出版日は半角数字のYYYYMMDD形式で入力してください";
 
+	/**
+	 * 登録前のバリデーションチェック
+	 *
+	 * @param bookInfo 書籍情報
+	 * @return errorList エラーメッセージのリスト
+	 */
 	public static List<String> checkBookInfo(BookDetailsInfo bookInfo) {
 		List<String> errorList = new ArrayList<>();
 		// 必須チェック
@@ -46,13 +52,13 @@ public class BookUtil {
 	 */
 	private static boolean checkDate(String publishDate) {
 		try {
-		    DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-		    formatter.setLenient(false); // ←これで厳密にチェックしてくれるようになる
-		    formatter.parse(publishDate);
-		    return true;
+			DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+			formatter.setLenient(false); // ←これで厳密にチェックしてくれるようになる
+			formatter.parse(publishDate);
+			return true;
 		} catch (ParseException p) {
-		    p.printStackTrace();
-		    return false;
+			p.printStackTrace();
+			return false;
 		}
 	}
 

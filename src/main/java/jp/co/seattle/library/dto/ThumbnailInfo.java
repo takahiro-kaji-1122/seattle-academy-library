@@ -11,18 +11,18 @@ import lombok.Data;
 @Data
 public class ThumbnailInfo {
 
-    private String thumbnailName;
-    private String thumbnailUrl;
+	private String thumbnailName;
+	private String thumbnailUrl;
 
-    public ThumbnailInfo() {
+	public ThumbnailInfo() {
 
-    }
+	}
 
-    // コンストラクタ
-    public ThumbnailInfo(String thumbnailName, String thumbnailUrl) {
-        this.thumbnailName = thumbnailName;
-        this.thumbnailUrl = thumbnailUrl;
+	// コンストラクタ
+	public ThumbnailInfo(String thumbnailName, String thumbnailUrl) {
+		this.thumbnailName = thumbnailName;
+		this.thumbnailUrl = thumbnailUrl;
 
-    }
+	}
 
 }

@@ -44,9 +44,7 @@
                         <c:if test="${!empty errorList}">
                             <div class="error">
                                 <c:forEach var="error" items="${errorList}">
-                                    <ul>
-                                        <li><c:out value="${error}" /></li>
-                                    </ul>
+                                    <p>${error}</p>
                                 </c:forEach>
                             </div>
                         </c:if>
