@@ -19,23 +19,21 @@ import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.ThumbnailService;
 
-/**
- * Handles requests for the application home page.
- */
-@Controller // APIの入り口
-public class AddBooksController {
-	final static Logger logger = LoggerFactory.getLogger(AddBooksController.class);
+@Controller
+public class EditBookController {
+	final static Logger logger = LoggerFactory.getLogger(EditBookController.class);
 
 	@Autowired
-	private BooksService booksService;
+	BooksService booksService;
 
 	@Autowired
-	private ThumbnailService thumbnailService;
+	ThumbnailService thumbnailService;
 
-	@RequestMapping(value = "/addBook", method = RequestMethod.GET) // value＝actionで指定したパラメータ
-	// RequestParamでname属性を取得
-	public String login(Model model) {
-		return "addBook";
+	@RequestMapping(value = "/editBook", method = RequestMethod.POST)
+	public String transitionEdit(Locale locale, @RequestParam("bookId") int bookId, Model model) {
+		logger.info("Welcome EditBooks.java! The client locale is {}.", locale);
+		model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
+		return "editBook";
 	}
 
 	/**
@@ -53,15 +51,17 @@ public class AddBooksController {
 	 * @return 遷移先画面
 	 */
 	@Transactional
-	@RequestMapping(value = "/insertBook", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
-	public String insertBook(Locale locale, @RequestParam("title") String title, @RequestParam("author") String author,
-			@RequestParam("publisher") String publisher, @RequestParam("publishDate") String publishDate,
-			@RequestParam("isbn") String isbn, @RequestParam("description") String description,
-			@RequestParam("thumbnail") MultipartFile file, Model model) {
-		logger.info("Welcome insertBooks.java! The client locale is {}.", locale);
+	@RequestMapping(value = "/updateBook", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
+	public String updateBook(Locale locale, @RequestParam("bookId") int bookId, @RequestParam("title") String title,
+			@RequestParam("author") String author, @RequestParam("publisher") String publisher,
+			@RequestParam("publishDate") String publishDate, @RequestParam("isbn") String isbn,
+			@RequestParam("description") String description, @RequestParam("thumbnail") MultipartFile file,
+			Model model) {
+		logger.info("Welcome updateBook! The client locale is {}.", locale);
 
 		// パラメータで受け取った書籍情報をDtoに格納する。
 		BookDetailsInfo bookInfo = new BookDetailsInfo();
+		bookInfo.setBookId(bookId);
 		bookInfo.setTitle(title);
 		bookInfo.setAuthor(author);
 		bookInfo.setPublisher(publisher);
@@ -74,7 +74,7 @@ public class AddBooksController {
 		if (errorList.size() > 0) {
 			model.addAttribute("bookInfo", bookInfo);
 			model.addAttribute("errorList", errorList);
-			return "addBook";
+			return "editBook";
 		}
 
 		// クライアントのファイルシステムにある元のファイル名を設定する
@@ -95,12 +95,12 @@ public class AddBooksController {
 				// 異常終了時の処理
 				logger.error("サムネイルアップロードでエラー発生", e);
 				model.addAttribute("bookDetailsInfo", bookInfo);
-				return "addBook";
+				return "editBook";
 			}
 		}
 
-		// 書籍情報を新規登録する
-		int bookId = booksService.registBook(bookInfo);
+		// 書籍情報を更新する
+		booksService.updateBook(bookInfo);
 
 		model.addAttribute("resultMessage", "登録完了");
 

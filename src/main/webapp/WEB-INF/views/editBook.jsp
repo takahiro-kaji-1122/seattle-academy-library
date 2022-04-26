@@ -29,8 +29,8 @@
         </div>
     </header>
     <main>
-        <form action="<%=request.getContextPath()%>/insertBook" method="post" enctype="multipart/form-data" id="data_upload_form">
-            <h1>書籍の追加</h1>
+        <form action="<%=request.getContextPath()%>/updateBook" method="post" enctype="multipart/form-data" id="data_upload_form">
+            <h1>書籍の編集</h1>
             <div class="content_body add_book_content">
                 <div>
                     <span>書籍の画像</span> <span class="care care1">任意</span>
@@ -105,7 +105,7 @@
                 </div>
             </div>
             <div class="bookBtn_box">
-                <button type="submit" id="add-btn" class="btn_addBook">登録</button>
+                <button type="submit" id="add-btn" class="btn_updateBook">更新</button>
             </div>
         </form>
     </main>

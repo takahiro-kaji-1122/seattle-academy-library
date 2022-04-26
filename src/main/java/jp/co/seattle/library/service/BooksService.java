@@ -64,7 +64,7 @@ public class BooksService {
 	public int registBook(BookDetailsInfo bookInfo) {
 		String sql = "INSERT INTO books (title, author, publisher, publish_date, thumbnail_name, thumbnail_url, isbn, description, reg_date, upd_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?,now(),now()) RETURNING id";
 
-		int bookId = jdbcTemplate.queryForObject(sql, Integer.class, bookInfo.getTitle(), bookInfo.getAuthor(),
+		int bookId = jdbcTemplate.queryForObject(sql, int.class, bookInfo.getTitle(), bookInfo.getAuthor(),
 				bookInfo.getPublisher(), bookInfo.getPublishDate(), bookInfo.getThumbnailName(),
 				bookInfo.getThumbnailUrl(), bookInfo.getIsbn(), bookInfo.getDescription());
 		return bookId;
@@ -78,5 +78,18 @@ public class BooksService {
 	public void deleteBook(int bookId) {
 		String sql = "delete from books where id = " + bookId;
 		jdbcTemplate.update(sql);
+	}
+
+	/**
+	 * 書籍情報を更新する
+	 * 
+	 * @param bookInfo
+	 * @return bookId 書籍ID
+	 */
+	public void updateBook(BookDetailsInfo bookInfo) {
+		String sql = "UPDATE books set title = ?, author = ?, publisher = ?, publish_date = ?, thumbnail_name = ?, thumbnail_url = ?, isbn = ?, description = ?, upd_date = now();";
+		jdbcTemplate.update(sql, bookInfo.getTitle(), bookInfo.getAuthor(), bookInfo.getPublisher(),
+				bookInfo.getPublishDate(), bookInfo.getThumbnailName(), bookInfo.getThumbnailUrl(), bookInfo.getIsbn(),
+				bookInfo.getDescription());
 	}
 }
