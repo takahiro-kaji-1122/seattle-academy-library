@@ -97,17 +97,15 @@ public class AddBooksController {
 		}
 
 		// 書籍情報を新規登録する
-		booksService.registBook(bookInfo);
+		int bookId = booksService.registBook(bookInfo);
 
 		model.addAttribute("resultMessage", "登録完了");
 
 		// 登録した書籍の詳細情報を表示する
-		int latestBookId = booksService.getLatestBookId();
-		BookDetailsInfo registedBookInfo = booksService.getBookInfo(latestBookId);
+		BookDetailsInfo registedBookInfo = booksService.getBookInfo(bookId);
 
 		model.addAttribute("bookDetailsInfo", registedBookInfo);
 		// 詳細画面に遷移する
 		return "details";
 	}
-
 }
