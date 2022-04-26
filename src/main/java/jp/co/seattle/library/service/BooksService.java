@@ -87,9 +87,9 @@ public class BooksService {
 	 * @return bookId 書籍ID
 	 */
 	public void updateBook(BookDetailsInfo bookInfo) {
-		String sql = "UPDATE books set title = ?, author = ?, publisher = ?, publish_date = ?, thumbnail_name = ?, thumbnail_url = ?, isbn = ?, description = ?, upd_date = now();";
+		String sql = "UPDATE books set title = ?, author = ?, publisher = ?, publish_date = ?, thumbnail_name = ?, thumbnail_url = ?, isbn = ?, description = ?, upd_date = now() where id = ?;";
 		jdbcTemplate.update(sql, bookInfo.getTitle(), bookInfo.getAuthor(), bookInfo.getPublisher(),
 				bookInfo.getPublishDate(), bookInfo.getThumbnailName(), bookInfo.getThumbnailUrl(), bookInfo.getIsbn(),
-				bookInfo.getDescription());
+				bookInfo.getDescription(), bookInfo.getBookId());
 	}
 }
