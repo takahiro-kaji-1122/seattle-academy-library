@@ -54,8 +54,8 @@ public class BookUtil {
 		try {
 			DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 			formatter.setLenient(false); // ←これで厳密にチェックしてくれるようになる
-			formatter.parse(publishDate);
-			return true;
+			String parseDate = formatter.format(formatter.parse(publishDate));
+			return publishDate.equals(parseDate);
 		} catch (ParseException p) {
 			p.printStackTrace();
 			return false;
