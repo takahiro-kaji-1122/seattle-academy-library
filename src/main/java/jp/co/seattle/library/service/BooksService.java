@@ -59,7 +59,7 @@ public class BooksService {
 	 * 書籍を登録する
 	 *
 	 * @param bookInfo 書籍情報
-	 * @return
+	 * @return bookId 書籍ID
 	 */
 	public int registBook(BookDetailsInfo bookInfo) {
 		String sql = "INSERT INTO books (title, author, publisher, publish_date, thumbnail_name, thumbnail_url, isbn, description, reg_date, upd_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?,now(),now()) RETURNING id";
@@ -78,16 +78,5 @@ public class BooksService {
 	public void deleteBook(int bookId) {
 		String sql = "delete from books where id = " + bookId;
 		jdbcTemplate.update(sql);
-	}
-
-	/**
-	 * booksテーブルの最大のidを取得する
-	 * 
-	 * @return bookId 書籍ID
-	 */
-	public int getLatestBookId() {
-		String sql = "SELECT MAX(id) FROM books;";
-		int bookId = jdbcTemplate.queryForObject(sql, int.class);
-		return bookId;
 	}
 }
