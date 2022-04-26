@@ -59,19 +59,15 @@ public class BooksService {
 	 * 書籍を登録する
 	 *
 	 * @param bookInfo 書籍情報
+	 * @return
 	 */
-	public void registBook(BookDetailsInfo bookInfo) {
+	public int registBook(BookDetailsInfo bookInfo) {
+		String sql = "INSERT INTO books (title, author, publisher, publish_date, thumbnail_name, thumbnail_url, isbn, description, reg_date, upd_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?,now(),now()) RETURNING id";
 
-		String sql = "";
-		String thumbnailName = bookInfo.getThumbnailName() == null ? "NULL" : "'" + bookInfo.getThumbnailName() + "'";
-		String thumbnailUrl = bookInfo.getThumbnailUrl() == null ? "NULL" : "'" + bookInfo.getThumbnailUrl() + "'";
-		String isbn = bookInfo.getIsbn().equals("") ? "NULL" : bookInfo.getIsbn();
-		sql = "INSERT INTO books (title, author,publisher,publish_date,thumbnail_name,thumbnail_url,isbn,description,reg_date,upd_date) VALUES ('"
-				+ bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "','"
-				+ bookInfo.getPublishDate() + "'," + thumbnailName + "," + thumbnailUrl + "," + isbn + ",'"
-				+ bookInfo.getDescription() + "'," + "now()," + "now())";
-
-		jdbcTemplate.update(sql);
+		int bookId = jdbcTemplate.queryForObject(sql, Integer.class, bookInfo.getTitle(), bookInfo.getAuthor(),
+				bookInfo.getPublisher(), bookInfo.getPublishDate(), bookInfo.getThumbnailName(),
+				bookInfo.getThumbnailUrl(), bookInfo.getIsbn(), bookInfo.getDescription());
+		return bookId;
 	}
 
 	/**
@@ -91,7 +87,7 @@ public class BooksService {
 	 */
 	public int getLatestBookId() {
 		String sql = "SELECT MAX(id) FROM books;";
-		int bookId = jdbcTemplate.queryForObject(sql, Integer.class);
+		int bookId = jdbcTemplate.queryForObject(sql, int.class);
 		return bookId;
 	}
 }
