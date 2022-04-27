@@ -29,8 +29,8 @@ public class EditBookController {
 	@Autowired
 	ThumbnailService thumbnailService;
 
-	@RequestMapping(value = "/editBook", method = RequestMethod.POST)
-	public String transitionEdit(Locale locale, @RequestParam("bookId") int bookId, Model model) {
+	@RequestMapping(value = "/editBook", method = RequestMethod.GET)
+	public String transitionEdit(Locale locale, int bookId, Model model) {
 		logger.info("Welcome EditBooks.java! The client locale is {}.", locale);
 		model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
 		return "editBook";
@@ -105,13 +105,7 @@ public class EditBookController {
 		// 書籍情報を更新する
 		booksService.updateBook(bookInfo);
 
-		model.addAttribute("resultMessage", "登録完了");
-
-		// 登録した書籍の詳細情報を表示する
-		BookDetailsInfo registedBookInfo = booksService.getBookInfo(bookId);
-
-		model.addAttribute("bookDetailsInfo", registedBookInfo);
 		// 詳細画面に遷移する
-		return "details";
+		return "redirect:/details?bookId=" + bookId;
 	}
 }
