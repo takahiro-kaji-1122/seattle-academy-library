@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.seattle.library.service.BooksService;
 
@@ -33,8 +32,8 @@ public class DetailsController {
 	 * @return
 	 */
 	@Transactional
-	@RequestMapping(value = "/details", method = RequestMethod.POST)
-	public String detailsBook(Locale locale, @RequestParam("bookId") Integer bookId, Model model) {
+	@RequestMapping(value = "/details", method = RequestMethod.GET)
+	public String detailsBook(Locale locale, int bookId, Model model) {
 		// デバッグ用ログ
 		logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
 

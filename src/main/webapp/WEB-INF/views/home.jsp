@@ -27,6 +27,7 @@
     <main>
         <h1>Home</h1>
         <a href="<%=request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a>
+        <a href="<%=request.getContextPath()%>/bulkRegistBooks" class="btn_bulk_book">一括登録</a>
         <div class="content_body">
             <c:if test="${!empty resultMessage}">
                 <div class="error_msg">${resultMessage}</div>
@@ -35,10 +36,10 @@
                 <div class="booklist">
                     <c:forEach var="bookInfo" items="${bookList}">
                         <div class="books">
-                            <form method="post" class="book_thumnail" action="<%=request.getContextPath()%>/details">
-                                <a href="javascript:void(0)" onclick="this.parentNode.submit();"> <c:if test="${bookInfo.thumbnail == null}">
+                            <form method="get" class="book_thumnail" action="details">
+                                <a href="javascript:void(0)" onclick="this.parentNode.submit();"> <c:if test="${empty bookInfo.thumbnail}">
                                         <img class="book_noimg" src="resources/img/noImg.png">
-                                    </c:if> <c:if test="${bookInfo.thumbnail != null}">
+                                    </c:if> <c:if test="${!empty bookInfo.thumbnail}">
                                         <img class="book_noimg" src="${bookInfo.thumbnail}">
                                     </c:if>
                                 </a> <input type="hidden" name="bookId" value="${bookInfo.bookId}">

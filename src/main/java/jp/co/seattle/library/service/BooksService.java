@@ -48,9 +48,9 @@ public class BooksService {
 	public BookDetailsInfo getBookInfo(int bookId) {
 
 		// JSPに渡すデータを設定する
-		String sql = "SELECT * FROM books where id =" + bookId;
+		String sql = "SELECT * FROM books where id = ?;";
 
-		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
+		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper(), bookId);
 
 		return bookDetailsInfo;
 	}
@@ -76,15 +76,14 @@ public class BooksService {
 	 * @param bookId 書籍ID
 	 */
 	public void deleteBook(int bookId) {
-		String sql = "delete from books where id = " + bookId;
-		jdbcTemplate.update(sql);
+		String sql = "delete from books where id = ?;";
+		jdbcTemplate.update(sql, bookId);
 	}
 
 	/**
 	 * 書籍情報を更新する
 	 * 
 	 * @param bookInfo
-	 * @return bookId 書籍ID
 	 */
 	public void updateBook(BookDetailsInfo bookInfo) {
 		String sql = "UPDATE books set title = ?, author = ?, publisher = ?, publish_date = ?, thumbnail_name = ?, thumbnail_url = ?, isbn = ?, description = ?, upd_date = now() where id = ?;";

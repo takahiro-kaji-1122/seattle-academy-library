@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.seattle.library.service.BooksService;
 
@@ -34,14 +33,11 @@ public class DeleteBookController {
 	 */
 	@Transactional
 	@RequestMapping(value = "/deleteBook", method = RequestMethod.POST)
-	public String deleteBook(Locale locale, @RequestParam("bookId") Integer bookId, Model model) {
+	public String deleteBook(Locale locale, int bookId, Model model) {
 		logger.info("Welcome delete! The client locale is {}.", locale);
 
 		booksService.deleteBook(bookId);
 
-		model.addAttribute("bookList", booksService.getBookList());
-		return "home";
-
+		return "redirect:/home";
 	}
-
 }

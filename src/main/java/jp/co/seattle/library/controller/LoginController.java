@@ -51,9 +51,7 @@ public class LoginController {
 			model.addAttribute("errorMessage", "メールアドレスとパスワードが一致しません");
 			return "login";
 		} else {
-			// 本の情報を取得して画面側に渡す
-			model.addAttribute("bookList", booksService.getBookList());
-			return "home";
+			return "redirect:/home";
 		}
 	}
 }
