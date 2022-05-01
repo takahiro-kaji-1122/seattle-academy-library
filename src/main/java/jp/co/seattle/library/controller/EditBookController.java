@@ -24,10 +24,11 @@ public class EditBookController {
 	final static Logger logger = LoggerFactory.getLogger(EditBookController.class);
 
 	@Autowired
-	BooksService booksService;
-
+	private BooksService booksService;
 	@Autowired
-	ThumbnailService thumbnailService;
+	private ThumbnailService thumbnailService;
+	@Autowired
+	private BookUtil bookUtil;
 
 	@RequestMapping(value = "/editBook", method = RequestMethod.GET)
 	public String transitionEdit(Locale locale, int bookId, Model model) {
@@ -56,8 +57,7 @@ public class EditBookController {
 			@RequestParam("author") String author, @RequestParam("publisher") String publisher,
 			@RequestParam("publishDate") String publishDate, @RequestParam("isbn") String isbn,
 			@RequestParam("description") String description, @RequestParam("thumbnail") MultipartFile file,
-			@RequestParam("thumbnailUrl") String currentThumbnailUrl,
-			@RequestParam("thumbnailName") String currentThumbnailName, Model model) {
+			Model model) {
 		logger.info("Welcome updateBook! The client locale is {}.", locale);
 
 		// パラメータで受け取った書籍情報をDtoに格納する。
@@ -69,10 +69,8 @@ public class EditBookController {
 		bookInfo.setPublishDate(publishDate);
 		bookInfo.setIsbn(isbn);
 		bookInfo.setDescription(description);
-		bookInfo.setThumbnailUrl(currentThumbnailUrl);
-		bookInfo.setThumbnailName(currentThumbnailName);
 
-		List<String> errorList = BookUtil.checkBookInfo(bookInfo);
+		List<String> errorList = bookUtil.checkBookInfo(bookInfo);
 		// errorListに一つでもエラーメッセージが入っていたら登録しない
 		if (errorList.size() > 0) {
 			model.addAttribute("bookInfo", bookInfo);
@@ -94,7 +92,6 @@ public class EditBookController {
 				bookInfo.setThumbnailUrl(thumbnailUrl);
 
 			} catch (Exception e) {
-
 				// 異常終了時の処理
 				logger.error("サムネイルアップロードでエラー発生", e);
 				model.addAttribute("bookDetailsInfo", bookInfo);
