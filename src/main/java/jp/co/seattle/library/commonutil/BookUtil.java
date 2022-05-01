@@ -8,9 +8,11 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import jp.co.seattle.library.dto.BookDetailsInfo;
 
+@Service
 public class BookUtil {
 	final static Logger logger = LoggerFactory.getLogger(BookUtil.class);
 	private static final String REQUIRED_ERROR = "未入力の必須項目があります";
@@ -23,7 +25,7 @@ public class BookUtil {
 	 * @param bookInfo 書籍情報
 	 * @return errorList エラーメッセージのリスト
 	 */
-	public static List<String> checkBookInfo(BookDetailsInfo bookInfo) {
+	public List<String> checkBookInfo(BookDetailsInfo bookInfo) {
 		List<String> errorList = new ArrayList<>();
 		// 必須チェック
 		if (isEmptyBookInfo(bookInfo)) {

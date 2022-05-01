@@ -86,9 +86,16 @@ public class BooksService {
 	 * @param bookInfo
 	 */
 	public void updateBook(BookDetailsInfo bookInfo) {
-		String sql = "UPDATE books set title = ?, author = ?, publisher = ?, publish_date = ?, thumbnail_name = ?, thumbnail_url = ?, isbn = ?, description = ?, upd_date = now() where id = ?;";
-		jdbcTemplate.update(sql, bookInfo.getTitle(), bookInfo.getAuthor(), bookInfo.getPublisher(),
-				bookInfo.getPublishDate(), bookInfo.getThumbnailName(), bookInfo.getThumbnailUrl(), bookInfo.getIsbn(),
-				bookInfo.getDescription(), bookInfo.getBookId());
+		String sql;
+		if (bookInfo.getThumbnailUrl() == null) {
+			sql = "UPDATE books set title = ?, author = ?, publisher = ?, publish_date = ?, isbn = ?, description = ?, upd_date = now() where id = ?;";
+			jdbcTemplate.update(sql, bookInfo.getTitle(), bookInfo.getAuthor(), bookInfo.getPublisher(),
+					bookInfo.getPublishDate(), bookInfo.getIsbn(), bookInfo.getDescription(), bookInfo.getBookId());
+		} else {
+			sql = "UPDATE books set title = ?, author = ?, publisher = ?, publish_date = ?, thumbnail_name = ?, thumbnail_url = ?, isbn = ?, description = ?, upd_date = now() where id = ?;";
+			jdbcTemplate.update(sql, bookInfo.getTitle(), bookInfo.getAuthor(), bookInfo.getPublisher(),
+					bookInfo.getPublishDate(), bookInfo.getThumbnailName(), bookInfo.getThumbnailUrl(),
+					bookInfo.getIsbn(), bookInfo.getDescription(), bookInfo.getBookId());
+		}
 	}
 }
