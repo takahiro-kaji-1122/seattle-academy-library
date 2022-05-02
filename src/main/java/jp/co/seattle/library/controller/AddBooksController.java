@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.seattle.library.commonutil.BookUtil;
 import jp.co.seattle.library.dto.BookDetailsInfo;
@@ -58,7 +59,7 @@ public class AddBooksController {
 	public String insertBook(Locale locale, @RequestParam("title") String title, @RequestParam("author") String author,
 			@RequestParam("publisher") String publisher, @RequestParam("publishDate") String publishDate,
 			@RequestParam("isbn") String isbn, @RequestParam("description") String description,
-			@RequestParam("thumbnail") MultipartFile file, Model model) {
+			@RequestParam("thumbnail") MultipartFile file, Model model, RedirectAttributes redirectAttributes) {
 		logger.info("Welcome insertBooks.java! The client locale is {}.", locale);
 
 		// パラメータで受け取った書籍情報をDtoに格納する。
@@ -73,9 +74,9 @@ public class AddBooksController {
 		List<String> errorList = bookUtil.checkBookInfo(bookInfo);
 		// errorListに一つでもエラーメッセージが入っていたら登録しない
 		if (errorList.size() > 0) {
-			model.addAttribute("bookInfo", bookInfo);
-			model.addAttribute("errorList", errorList);
-			return "addBook";
+			redirectAttributes.addFlashAttribute("bookInfo", bookInfo);
+			redirectAttributes.addFlashAttribute("errorList", errorList);
+			return "redirect:/addBook";
 		}
 
 		// クライアントのファイルシステムにある元のファイル名を設定する
@@ -92,11 +93,10 @@ public class AddBooksController {
 				bookInfo.setThumbnailUrl(thumbnailUrl);
 
 			} catch (Exception e) {
-
 				// 異常終了時の処理
 				logger.error("サムネイルアップロードでエラー発生", e);
-				model.addAttribute("bookDetailsInfo", bookInfo);
-				return "addBook";
+				redirectAttributes.addFlashAttribute("bookDetailsInfo", bookInfo);
+				return "redirect:/addBook";
 			}
 		}
 
