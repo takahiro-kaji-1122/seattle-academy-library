@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.LendingService;
@@ -36,15 +36,19 @@ public class DeleteBookController {
 	 */
 	@Transactional
 	@RequestMapping(value = "/deleteBook", method = RequestMethod.POST)
-	public String deleteBook(Locale locale, int bookId, Model model) {
+	public String deleteBook(Locale locale, int bookId, RedirectAttributes redirectAttributes) {
 		logger.info("Welcome delete! The client locale is {}.", locale);
 
-		// 書籍を貸出し状態を削除する
-		lendingService.returnBook(bookId);
+		// 書籍の貸出し状態を取得する
+		boolean isLend = lendingService.checkLendingStatus(bookId);
 
-		// 書籍の削除
-		booksService.deleteBook(bookId);
-
-		return "redirect:/home";
+		if (isLend) {
+			redirectAttributes.addFlashAttribute("error", "貸し出し中のため削除できません。");
+			return "redirect:/details?bookId=" + bookId;
+		} else {
+			// 書籍の削除
+			booksService.deleteBook(bookId);
+			return "redirect:/home";
+		}
 	}
 }
