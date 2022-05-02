@@ -30,4 +30,14 @@ public class LendingService {
 		boolean isLend = jdbcTemplate.queryForObject(sql, boolean.class, bookId);
 		return isLend;
 	}
+
+	/**
+	 * 書籍を返す
+	 * 
+	 * @param bookId
+	 */
+	public void returnBook(int bookId) {
+		String sql = "DELETE FROM lending_manages WHERE book_id = ?;";
+		jdbcTemplate.update(sql, bookId);
+	}
 }

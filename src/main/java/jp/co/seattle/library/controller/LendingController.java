@@ -43,4 +43,21 @@ public class LendingController {
 		// 詳細画面に遷移する
 		return "redirect:/details?bookId=" + bookId;
 	}
+
+	@RequestMapping(value = "/returnBook", method = RequestMethod.POST)
+	public String returnBook(Locale locale, int bookId, RedirectAttributes redirectAttributes) {
+		logger.info("Welcome returnBook! The client locale is {}.", locale);
+
+		// 貸出し状態を確認する
+		boolean isLend = lendingService.checkLendingStatus(bookId);
+
+		if (isLend) {
+			lendingService.returnBook(bookId);
+		} else {
+			redirectAttributes.addFlashAttribute("error", "貸出しされていません。");
+		}
+
+		// 詳細画面に遷移する
+		return "redirect:/details?bookId=" + bookId;
+	}
 }
