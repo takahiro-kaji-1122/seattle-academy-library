@@ -27,7 +27,7 @@
     <main>
         <h1>一括登録</h1>
         <div class="bulk_form">
-            <form action="bulkRegistBooks" method="post" enctype="multipart/form-data" id="data_upload_form">
+            <form action="bulkRegist" method="post" enctype="multipart/form-data" id="data_upload_form">
                 <h2>CSVファイルをアップロードすることで書籍を一括で登録できます。</h2>
                 <div class="caution">
                     <p>「書籍名,著者名,出版社,出版日,ISBN」の形式で記載してください。</p>
