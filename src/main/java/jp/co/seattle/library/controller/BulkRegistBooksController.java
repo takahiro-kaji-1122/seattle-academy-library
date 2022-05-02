@@ -76,7 +76,7 @@ public class BulkRegistBooksController {
 				// bookDetailsInfoにセットする
 				BookDetailsInfo bookDetailsInfo = mapData(book);
 				// bookDetailsInfoでバリデーションチェックを行いエラーがあればエラーリストにメッセージをセットする
-				if (!bookUtil.checkBookInfo(bookDetailsInfo).isEmpty()) {
+				if (!CollectionUtils.isEmpty(bookUtil.checkBookInfo(bookDetailsInfo))) {
 					errorList.add(count + "行目の書籍登録でエラーが起きました。");
 				} else {
 					// 書籍リストに書籍情報を追加
