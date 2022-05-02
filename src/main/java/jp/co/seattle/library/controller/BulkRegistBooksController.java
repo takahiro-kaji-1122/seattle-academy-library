@@ -14,11 +14,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.seattle.library.commonutil.BookUtil;
 import jp.co.seattle.library.dto.BookDetailsInfo;
@@ -37,13 +38,17 @@ public class BulkRegistBooksController {
 	private static final int SPLIT_LIMIT = -1; // -1にしておくとカンマ区切りの空文字も分割対象にする
 
 	@RequestMapping(value = "/bulkRegistBooks", method = RequestMethod.GET) // value＝actionで指定したパラメータ
-	public String transitionBulkRegist(Model model) {
+	public String transitionBulkRegist(Locale locale) {
+		logger.info("Welcome GET bulkRegistBooks! The client locale is {}.", locale);
 		return "bulkRegistBooks";
 	}
 
 	@Transactional
-	@RequestMapping(value = "/bulkRegistBooks", method = RequestMethod.POST)
-	public String bulkRegist(Locale locale, @RequestParam("file") MultipartFile file, Model model) {
+	@RequestMapping(value = "/bulkRegist", method = RequestMethod.POST)
+	public String bulkRegist(Locale locale, @RequestParam("file") MultipartFile file,
+			RedirectAttributes redirectAttributes) {
+		logger.info("Welcome POST bulkRegistBooks! The client locale is {}.", locale);
+
 		// 書籍格納用リスト
 		List<BookDetailsInfo> books = new ArrayList<BookDetailsInfo>();
 		// csv一行取得用の文字列
@@ -55,6 +60,11 @@ public class BulkRegistBooksController {
 			InputStream stream = file.getInputStream();
 			Reader reader = new InputStreamReader(stream);
 			BufferedReader buf = new BufferedReader(reader);
+			if (!buf.ready()) {
+				errorList.add("csvに書籍情報がありません。");
+				redirectAttributes.addFlashAttribute("errorList", errorList);
+				return "redirect:/bulkRegistBooks";
+			}
 			// 行数カウント用の変数
 			int count = 0;
 			// 次の行が読み込めなくなるまで繰り返す
@@ -66,7 +76,7 @@ public class BulkRegistBooksController {
 				// bookDetailsInfoにセットする
 				BookDetailsInfo bookDetailsInfo = mapData(book);
 				// bookDetailsInfoでバリデーションチェックを行いエラーがあればエラーリストにメッセージをセットする
-				if (bookUtil.checkBookInfo(bookDetailsInfo).size() > 0) {
+				if (!bookUtil.checkBookInfo(bookDetailsInfo).isEmpty()) {
 					errorList.add(count + "行目の書籍登録でエラーが起きました。");
 				} else {
 					// 書籍リストに書籍情報を追加
@@ -78,23 +88,15 @@ public class BulkRegistBooksController {
 			e.printStackTrace();
 		}
 
-		// 書籍リストが空の場合は一括登録画面に返す
-		if (books.size() == 0) {
-			errorList.add("csvに書籍情報がありません。");
-			model.addAttribute("errorList", errorList);
-			return "bulkRegistBooks";
-		}
-
 		// バリデーションチェックに引っかかった場合は一括登録画面に返す
-		if (errorList.size() > 0) {
-			model.addAttribute("errorList", errorList);
-			return "bulkRegistBooks";
+		if (!CollectionUtils.isEmpty(errorList)) {
+			redirectAttributes.addFlashAttribute("errorList", errorList);
+			return "redirect:/bulkRegistBooks";
 		}
 
 		// 書籍リストに格納されている書籍を一冊ずつ登録
-		for (BookDetailsInfo book : books) {
-			booksService.registBook(book);
-		}
+		books.forEach(book -> booksService.registBook(book));
+		// 一覧に戻る
 		return "redirect:/home";
 	}
 
