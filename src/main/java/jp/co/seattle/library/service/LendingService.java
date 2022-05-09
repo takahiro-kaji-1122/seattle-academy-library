@@ -26,7 +26,7 @@ public class LendingService {
 	 * @return isLend
 	 */
 	public boolean checkLendingStatus(int bookId) {
-		String sql = "SELECT CASE WHEN book_id > 0 THEN true ELSE false END AS is_lend FROM books LEFT JOIN lending_manages lm on books.id = lm.book_id WHERE books.id = ?;";
+		String sql = "SELECT EXISTS(SELECT * FROM lending_manages WHERE book_id = ?) AS is_lend;";
 		boolean isLend = jdbcTemplate.queryForObject(sql, boolean.class, bookId);
 		return isLend;
 	}
