@@ -84,8 +84,9 @@ public class BulkRegistBooksController {
 				}
 			}
 		} catch (IOException e) {
-			line = "Can't read contents.";
-			e.printStackTrace();
+			errorList.add("csv読み込み時にエラーが起きました。");
+			redirectAttributes.addFlashAttribute("errorList", errorList);
+			return "redirect:/bulkRegistBooks";
 		}
 
 		// バリデーションチェックに引っかかった場合は一括登録画面に返す
