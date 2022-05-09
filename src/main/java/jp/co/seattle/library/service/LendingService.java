@@ -15,7 +15,7 @@ public class LendingService {
 	 * @param bookId
 	 */
 	public void lendBook(int bookId) {
-		String sql = "INSERT INTO lending_manages (book_id, lend_date, reg_date, upd_date) values (?, now(), now(), now())";
+		String sql = "INSERT INTO lending_manages (book_id) values (?)";
 		jdbcTemplate.update(sql, bookId);
 	}
 
