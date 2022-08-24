@@ -22,7 +22,13 @@
             <div class="authorization_form">
                 <form method="post" action="login">
                     <div class="title">ログイン</div>
+                    <c:if test="${unknownError}">
+                        <label class="error">時間を置いてからもう一度お試しください。</label>
+                    </c:if>
                     <label class="label">メールアドレス</label> <input type="text" class="input" name="email" id="email" autocomplete="off" required /> <label class="label">パスワード</label>
+                    <c:if test="${isNotExistAccount}">
+                        <label class="error">アカウントが存在しません。</label>
+                    </c:if>
                     <c:if test="${notMatchPassword}">
                         <label class="error">ユーザー名またはパスワードが間違っています。</label>
                     </c:if>

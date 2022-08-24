@@ -25,7 +25,7 @@
                     <form method="post" action="createAccount">
                         <div class="title">アカウントの作成</div>
                         <c:if test="${unknownError}">
-                            <label class="error">しばらく経ってからもう一度お試しください。</label>
+                            <label class="error">時間を置いてからもう一度お試しください。</label>
                         </c:if>
                         <label class="label">メールアドレス</label>
                         <c:if test="${emailDuplicat}">
