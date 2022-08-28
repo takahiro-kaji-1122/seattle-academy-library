@@ -21,10 +21,6 @@ public class BookInfo {
 
     private String publishDate;
 
-    private String description;
-
-    private int isbn;
-
     private String thumbnail;
 
     public BookInfo() {
@@ -38,16 +34,12 @@ public class BookInfo {
             String author,
             String publisher,
             String publishDate,
-            String description,
-            int isbn,
             String thumbnail) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.publishDate = publishDate;
-        this.description = description;
-        this.isbn = isbn;
         this.thumbnail = thumbnail;
     }
 

@@ -52,6 +52,9 @@ public class AddBooksController {
             @RequestParam("title") String title,
             @RequestParam("author") String author,
             @RequestParam("publisher") String publisher,
+            @RequestParam("publishDate") String publishDate,
+            @RequestParam("description") String description,
+            @RequestParam("isbn") int isbn,
             @RequestParam("thumbnail") MultipartFile file,
             Model model) {
         logger.info("Welcome insertBooks.java! The client locale is {}.", locale);
@@ -60,6 +63,9 @@ public class AddBooksController {
         BookDetailsInfo bookInfo = new BookDetailsInfo();
         bookInfo.setTitle(title);
         bookInfo.setAuthor(author);
+        bookInfo.setPublisher(publisher);
+        bookInfo.setPublishDate(publishDate);
+        bookInfo.setPublisher(publisher);
         bookInfo.setPublisher(publisher);
 
         // クライアントのファイルシステムにある元のファイル名を設定する
