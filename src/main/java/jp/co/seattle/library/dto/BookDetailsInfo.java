@@ -24,7 +24,7 @@ public class BookDetailsInfo {
 
     private String description;
 
-    private int isbn;
+    private String isbn;
 
     private String thumbnailUrl;
 
@@ -40,7 +40,7 @@ public class BookDetailsInfo {
             String author,
             String publisher,
             String description,
-            int isbn,
+            String isbn,
             String thumbnailUrl,
             String thumbnailName) {
         this.bookId = bookId;

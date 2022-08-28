@@ -2,6 +2,7 @@ package jp.co.seattle.library.controller;
 
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,19 +55,55 @@ public class AddBooksController {
             @RequestParam("publisher") String publisher,
             @RequestParam("publishDate") String publishDate,
             @RequestParam("description") String description,
-            @RequestParam("isbn") int isbn,
+            @RequestParam("isbn") String isbn,
             @RequestParam("thumbnail") MultipartFile file,
             Model model) {
         logger.info("Welcome insertBooks.java! The client locale is {}.", locale);
 
         // パラメータで受け取った書籍情報をDtoに格納する。
-        BookDetailsInfo bookInfo = new BookDetailsInfo();
-        bookInfo.setTitle(title);
-        bookInfo.setAuthor(author);
-        bookInfo.setPublisher(publisher);
-        bookInfo.setPublishDate(publishDate);
-        bookInfo.setPublisher(publisher);
-        bookInfo.setPublisher(publisher);
+        BookDetailsInfo newBookDetailsInfo = new BookDetailsInfo();
+        newBookDetailsInfo.setTitle(title);
+        newBookDetailsInfo.setAuthor(author);
+        newBookDetailsInfo.setPublisher(publisher);
+        newBookDetailsInfo.setPublishDate(publishDate);
+        newBookDetailsInfo.setDescription(description);
+        newBookDetailsInfo.setIsbn(isbn);
+
+        /* バリデーションチェック
+         * requiredItemCheck 必須項目のチェック結果
+         * Boolean publishDateCheck 出版日のチェック結果
+         * Boolean isbmCheck ISBNのチェック結果
+         */
+        Boolean requiredItemCheck = false;
+        Boolean publishDateCheck = false;
+        Boolean isbmCheck = false;
+        //必須項目のチェック（Nullとスペースのみを許容しない）
+        if (StringUtils.isNotBlank(newBookDetailsInfo.getTitle()) &&
+                StringUtils.isNotBlank(newBookDetailsInfo.getAuthor()) &&
+                StringUtils.isNotBlank(newBookDetailsInfo.getPublisher()) &&
+                StringUtils.isNotBlank(newBookDetailsInfo.getPublishDate())) {
+            requiredItemCheck = true;
+        }
+        if (newBookDetailsInfo.getPublishDate().matches("^[0-9]{8,8}$")) {
+            publishDateCheck = true;
+        }
+        if (newBookDetailsInfo.getIsbn().matches("^[0-9]{10,10}$") ||
+                newBookDetailsInfo.getIsbn().matches("^[0-9]{13,13}$") ||
+                StringUtils.isEmpty(newBookDetailsInfo.getIsbn())) {
+            isbmCheck = true;
+        }
+        //　必須項目・出版日・ISBNのチェック結果のうち、いずれかがNGの場合、エラーを表示
+        if (!requiredItemCheck ||
+                !publishDateCheck ||
+                !isbmCheck) {
+            model.addAttribute("requiredItemCheckNG", !requiredItemCheck);
+            model.addAttribute("publishDateCheckNG", !publishDateCheck);
+            model.addAttribute("isbmCheckNG", !isbmCheck);
+            model.addAttribute("newBookDetailsInfo", newBookDetailsInfo);
+            return "addBook";
+        }
+
+        //
 
         // クライアントのファイルシステムにある元のファイル名を設定する
         String thumbnail = file.getOriginalFilename();
@@ -78,24 +115,34 @@ public class AddBooksController {
                 // URLを取得
                 String thumbnailUrl = thumbnailService.getURL(fileName);
 
-                bookInfo.setThumbnailName(fileName);
-                bookInfo.setThumbnailUrl(thumbnailUrl);
+                newBookDetailsInfo.setThumbnailName(fileName);
+                newBookDetailsInfo.setThumbnailUrl(thumbnailUrl);
 
             } catch (Exception e) {
 
                 // 異常終了時の処理
                 logger.error("サムネイルアップロードでエラー発生", e);
-                model.addAttribute("bookDetailsInfo", bookInfo);
+                model.addAttribute("newBookDetailsInfo", newBookDetailsInfo);
                 return "addBook";
             }
         }
 
         // 書籍情報を新規登録する
-        booksService.registBook(bookInfo);
 
-        model.addAttribute("resultMessage", "登録完了");
+        try {
+            booksService.registBook(newBookDetailsInfo);
+        } catch (Exception e) {
+
+            //異常終了時の処理
+            logger.error("書籍情報登録でエラー発生", e);
+            model.addAttribute("unknownError", true);
+            model.addAttribute("newBookDetailsInfo", newBookDetailsInfo);
+            return "addBook";
+        }
 
         // TODO 登録した書籍の詳細情報を表示するように実装
+        model.addAttribute("isInsertSuccess", true);
+        model.addAttribute("bookDetailsInfo", newBookDetailsInfo);
         //  詳細画面に遷移する
         return "details";
     }

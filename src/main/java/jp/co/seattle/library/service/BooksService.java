@@ -60,6 +60,7 @@ public class BooksService {
      * 書籍を登録する
      *
      * @param bookInfo 書籍情報
+     * @return bookId 追加した書籍に振られたID
      */
     public void registBook(BookDetailsInfo bookInfo) {
 
