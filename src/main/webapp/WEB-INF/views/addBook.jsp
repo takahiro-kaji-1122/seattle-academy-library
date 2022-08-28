@@ -67,6 +67,12 @@
                             <input type="text" name="publisher">
                         </c:if>
                     </div>
+                    <div>
+                        <span>説明</span><span class="care care1">任意</span> <input type="text" name="description" value="${bookInfo.description}">
+                    </div>
+                    <div>
+                        <span>ISBN</span><span class="care care1">任意</span> <input type="text" name="isbn" value="${bookInfo.isbn}">
+                    </div>
                     <input type="hidden" id="bookId" name="bookId" value="${bookInfo.bookId}">
                 </div>
             </div>
@@ -74,7 +80,6 @@
                 <button type="submit" id="add-btn" class="btn_addBook">登録</button>
             </div>
         </form>
-        </div>
     </main>
 </body>
 </html>
