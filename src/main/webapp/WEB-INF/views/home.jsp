@@ -25,6 +25,12 @@
         </div>
     </header>
     <main>
+        <c:if test="${unknownError}">
+            <label class="error">時間を置いてからもう一度お試しください。</label>
+        </c:if>
+        <c:if test="${isSuccessDelete}">
+            <label class="success">書籍を削除しました</label>
+        </c:if>
         <h1>Home</h1>
         <a href="<%=request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a>
         <div class="content_body">
