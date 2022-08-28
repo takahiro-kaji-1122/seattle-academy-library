@@ -1,5 +1,8 @@
 package jp.co.seattle.library.controller;
 
+import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jp.co.seattle.library.dto.BookInfo;
 import jp.co.seattle.library.service.BooksService;
 
 /**
@@ -27,7 +31,19 @@ public class HomeController {
      */
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String transitionHome(Model model) {
-        model.addAttribute("bookList", booksService.getBookList());
+        List<BookInfo> bookList;
+        //書籍情報が0件の場合
+        try {
+            bookList = booksService.getBookList();
+        } catch (Exception e) {
+            model.addAttribute("unknownError", true);
+            return "home";
+        }
+        if (CollectionUtils.isEmpty(bookList)) {
+            model.addAttribute("notExistBookData", true);
+            return "home";
+        }
+        model.addAttribute("bookList", bookList);
         return "home";
     }
 

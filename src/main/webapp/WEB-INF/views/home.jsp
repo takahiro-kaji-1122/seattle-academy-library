@@ -33,6 +33,12 @@
             </c:if>
             <div>
                 <div class="booklist">
+                    <c:if test="${unknownError}">
+                        <label class="error">書籍を表示できません。時間を置いてからもう一度お試しください。</label>
+                    </c:if>
+                    <c:if test="${notExistBookData}">
+                        <label class="error">書籍が登録されていません</label>
+                    </c:if>
                     <c:forEach var="bookInfo" items="${bookList}">
                         <div class="books">
                             <form method="post" class="book_thumnail" action="<%=request.getContextPath()%>/details">

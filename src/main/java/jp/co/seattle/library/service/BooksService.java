@@ -33,7 +33,7 @@ public class BooksService {
 
         //取得すべきカラムを書籍名（title）の昇順で取得
         List<BookInfo> getedBookList = jdbcTemplate.query(
-                "select id,title,author,publisher,publish_date,thumbnail_url from books　ORDER BY CompanyName title",
+                "select id,title,author,publisher,publish_date,thumbnail_url from books order by title;",
                 new BookInfoRowMapper());
 
         return getedBookList;
