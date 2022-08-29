@@ -31,10 +31,10 @@
     <main>
         <form action="<%=request.getContextPath()%>/insertBook" method="post" enctype="multipart/form-data" id="data_upload_form">
             <h1>書籍の追加</h1>
+            <c:if test="${unknownError}">
+                <label class="content_body detail_book_content error">時間を置いてからもう一度お試しください。</label>
+            </c:if>
             <div class="content_body add_book_content">
-                <c:if test="${unknownError}">
-                    <label class="error">時間を置いてからもう一度お試しください。</label>
-                </c:if>
                 <div>
                     <span>書籍の画像</span> <span class="care care1">任意</span>
                     <div class="book_thumnail">

@@ -31,6 +31,9 @@
     </header>
     <main>
         <h1>書籍の詳細</h1>
+        <c:if test="${isInsertSuccess}">
+            <label class="content_body detail_book_content success">書籍の登録が完了しました</label>
+        </c:if>
         <div class="content_body detail_book_content">
             <div class="content_left">
                 <span>書籍の画像</span>

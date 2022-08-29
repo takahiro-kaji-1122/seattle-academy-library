@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.service.BooksService;
@@ -50,6 +51,7 @@ public class AddBooksController {
     @Transactional
     @RequestMapping(value = "/insertBook", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
     public String insertBook(Locale locale,
+            RedirectAttributes redirectAttributes,
             @RequestParam("title") String title,
             @RequestParam("author") String author,
             @RequestParam("publisher") String publisher,
@@ -68,6 +70,10 @@ public class AddBooksController {
         newBookDetailsInfo.setPublishDate(publishDate);
         newBookDetailsInfo.setDescription(description);
         newBookDetailsInfo.setIsbn(isbn);
+
+        //ThumbnailNameとThumbnailUrlに""代入
+        newBookDetailsInfo.setThumbnailName("");
+        newBookDetailsInfo.setThumbnailUrl("");
 
         /* バリデーションチェック
          * requiredItemCheck 必須項目のチェック結果
@@ -130,7 +136,7 @@ public class AddBooksController {
         // 書籍情報を新規登録する
 
         try {
-            booksService.registBook(newBookDetailsInfo);
+            newBookDetailsInfo.setBookId(booksService.registBook(newBookDetailsInfo));
         } catch (Exception e) {
 
             //異常終了時の処理
@@ -141,10 +147,10 @@ public class AddBooksController {
         }
 
         // TODO 登録した書籍の詳細情報を表示するように実装
-        model.addAttribute("isInsertSuccess", true);
-        model.addAttribute("bookDetailsInfo", newBookDetailsInfo);
+        redirectAttributes.addAttribute("isInsertSuccess", true);
+        redirectAttributes.addAttribute("bookId", newBookDetailsInfo.getBookId());
         //  詳細画面に遷移する
-        return "details";
+        return "redirect:/details";
     }
 
 }
