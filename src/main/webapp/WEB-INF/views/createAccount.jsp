@@ -24,7 +24,22 @@
                 <div class="authorization_form">
                     <form method="post" action="createAccount">
                         <div class="title">アカウントの作成</div>
-                        <label class="label">メールアドレス</label> <input type="email" class="input" id="email" name="email" autocomplete="off" required> <label class="label">パスワード</label> <input type="password" class="input" id="password" name="password" required> <label class="label">パスワード（確認用）</label> <input type="password" class="input" id="passwordForCheck" name="passwordForCheck" required> <input type="submit" class="button primary" value="作成する">
+                        <c:if test="${unknownError}">
+                            <label class="error">時間を置いてからもう一度お試しください。</label>
+                        </c:if>
+                        <label class="label">メールアドレス</label>
+                        <c:if test="${emailDuplicat}">
+                            <label class="error">登録されているメールアドレスです。</label>
+                        </c:if>
+                        <input type="email" class="input" id="email" name="email" autocomplete="off" required> <label class="label">パスワード</label>
+                        <c:if test="${validationCheck}">
+                            <label class="error">パスワードは8文字以上かつ半角英数字に設定してください。</label>
+                        </c:if>
+                        <input type="password" class="input" id="password" name="password" required> <label class="label">パスワード（確認用）</label>
+                        <c:if test="${notMatchPasswordForCheck}">
+                            <label class="error">パスワードが一致しません。</label>
+                        </c:if>
+                        <input type="password" class="input" id="passwordForCheck" name="passwordForCheck" required> <input type="submit" class="button primary" value="作成する">
                     </form>
                 </div>
                 <div class="authorization_navi">

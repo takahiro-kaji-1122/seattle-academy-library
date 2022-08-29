@@ -22,7 +22,17 @@
             <div class="authorization_form">
                 <form method="post" action="login">
                     <div class="title">ログイン</div>
-                    <label class="label">メールアドレス</label> <input type="text" class="input" name="email" id="email" autocomplete="off" required /> <label class="label">パスワード</label> <input type="password" class="input" id="password" name="password" required /> <input type="submit" class="button primary" value="ログイン" />
+                    <c:if test="${unknownError}">
+                        <label class="error">時間を置いてからもう一度お試しください。</label>
+                    </c:if>
+                    <label class="label">メールアドレス</label> <input type="text" class="input" name="email" id="email" autocomplete="off" required /> <label class="label">パスワード</label>
+                    <c:if test="${isNotExistAccount}">
+                        <label class="error">アカウントが存在しません。</label>
+                    </c:if>
+                    <c:if test="${notMatchPassword}">
+                        <label class="error">ユーザー名またはパスワードが間違っています。</label>
+                    </c:if>
+                    <input type="password" class="input" id="password" name="password" required /> <input type="submit" class="button primary" value="ログイン" />
                     <c:if test="${!empty errorMessage}">
                         <div class="error">${errorMessage}</div>
                     </c:if>

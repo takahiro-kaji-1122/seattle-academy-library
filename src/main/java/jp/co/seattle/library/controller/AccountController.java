@@ -2,9 +2,11 @@ package jp.co.seattle.library.controller;
 
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -53,16 +55,38 @@ public class AccountController {
         logger.info("Welcome createAccount! The client locale is {}.", locale);
 
         // パラメータで受け取った書籍情報をDtoに格納する。
-        UserInfo userInfo = new UserInfo();
-        userInfo.setEmail(email);
+        UserInfo createedUserInfo = new UserInfo();
+        createedUserInfo.setEmail(email);
 
-        // TODO バリデーションチェック、パスワード一致チェック実装
+        //パスワードは8文字以上かつ半角英数字出ない場合、エラーを表示
+        if (!StringUtils.equals(password, "[A-Za-z0-9]{8,}")) {
+            model.addAttribute("validationCheck", true);
+            return "createAccount";
+        }
 
-        userInfo.setPassword(password);
-        usersService.registUser(userInfo);
+        //パスワードと確認用パスワードが一致しない場合、エラーを表示
+        if (!StringUtils.equals(password, passwordForCheck)) {
+            model.addAttribute("notMatchPasswordForCheck", true);
+            return "createAccount";
+        }
 
-        model.addAttribute("bookList", booksService.getBookList());
-        return "home";
+        //パスワードに問題ない場合
+        createedUserInfo.setPassword(password);
+        //アカウントの登録処理
+        try {
+            usersService.registUser(createedUserInfo);
+        } catch (DuplicateKeyException e) {
+            //emailがすでに登録されている場合、エラーを表示
+            model.addAttribute("emailDuplicat", true);
+            return "createAccount";
+        } catch (Exception e) {
+            //何かしらの例外やエラーが出た場合、エラーを表示
+            model.addAttribute("unknownError", true);
+            return "createAccount";
+        }
+
+        //登録できたらログイン画面に遷移
+        return "login";
+
     }
-
 }
