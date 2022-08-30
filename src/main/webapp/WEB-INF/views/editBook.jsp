@@ -30,7 +30,8 @@
         </div>
     </header>
     <main>
-        <form action="<%=request.getContextPath()%>/insertBook" method="post" enctype="multipart/form-data" id="data_upload_form">
+        <form action="<%=request.getContextPath()%>/editBook" method="post" enctype="multipart/form-data" id="data_upload_form">
+            <input type="hidden" name="bookId" value="${editBookDetailsInfo.bookId}">
             <h1>書籍編集</h1>
             <div class="content_body detail_book_content">
                 <div class="content_left">

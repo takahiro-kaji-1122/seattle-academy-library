@@ -34,6 +34,9 @@
         <c:if test="${isInsertSuccess}">
             <label class="content_body detail_book_content success">書籍の登録が完了しました</label>
         </c:if>
+        <c:if test="${isEditSuccess}">
+            <label class="content_body detail_book_content success">書籍の編集が完了しました</label>
+        </c:if>
         <div class="content_body detail_book_content">
             <div class="content_left">
                 <span>書籍の画像</span>
