@@ -35,7 +35,7 @@ public class DeleteBookController {
      * @return 遷移先画面名
      */
     @Transactional
-    @RequestMapping(value = "/deleteBook", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteBook", method = RequestMethod.GET)
     public String deleteBook(
             RedirectAttributes redirectAttributes,
             Locale locale,

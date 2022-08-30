@@ -74,7 +74,10 @@
             </div>
         </div>
         <div class="edtDelBookBtn_box">
-            <form method="post" action="deleteBook">
+            <form method="get" action="editBook">
+                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_editBook">編集</button>
+            </form>
+            <form method="get" action="deleteBook">
                 <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_deleteBook">削除</button>
             </form>
         </div>
