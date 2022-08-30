@@ -55,26 +55,28 @@ public class AccountController {
         logger.info("Welcome createAccount! The client locale is {}.", locale);
 
         // パラメータで受け取った書籍情報をDtoに格納する。
-        UserInfo createedUserInfo = new UserInfo();
-        createedUserInfo.setEmail(email);
+        UserInfo createdUserInfo = new UserInfo();
+        createdUserInfo.setEmail(email);
 
-        //パスワードは8文字以上かつ半角英数字出ない場合、エラーを表示
+        //パスワードは8文字以上かつ半角英数字出ない場合
         if (!StringUtils.equals(password, "[A-Za-z0-9]{8,}")) {
+            //エラーを表示
             model.addAttribute("validationCheck", true);
             return "createAccount";
         }
 
-        //パスワードと確認用パスワードが一致しない場合、エラーを表示
+        //パスワードと確認用パスワードが一致しない場合
         if (!StringUtils.equals(password, passwordForCheck)) {
+            //エラーを表示
             model.addAttribute("notMatchPasswordForCheck", true);
             return "createAccount";
         }
 
         //パスワードに問題ない場合
-        createedUserInfo.setPassword(password);
+        createdUserInfo.setPassword(password);
         //アカウントの登録処理
         try {
-            usersService.registUser(createedUserInfo);
+            usersService.registUser(createdUserInfo);
         } catch (DuplicateKeyException e) {
             //emailがすでに登録されている場合、エラーを表示
             model.addAttribute("emailDuplicat", true);
