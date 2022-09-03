@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,9 +57,6 @@ public class AddCollectiveBooksController {
         logger.info("Welcome addCollectiveBooks.java! The client locale is {}.", locale);
 
         //アップロードされたファイルがCSVファイルか        
-        System.out.println(StringUtils.substringAfterLast(uploadFile.getOriginalFilename(), "."));
-        System.out.println(
-                StringUtils.equals("csv", StringUtils.substringAfterLast(uploadFile.getOriginalFilename(), ".")));
         if (!StringUtils.equals("csv", StringUtils.substringAfterLast(uploadFile.getOriginalFilename(), "."))) {
             model.addAttribute("errorMsg", "CSVファイルをアップロードしてください。");
             return "addCollectiveBooks";
@@ -76,7 +74,15 @@ public class AddCollectiveBooksController {
         try {
             BufferedReader bufferedReaderUploadFile = new BufferedReader(
                     new InputStreamReader(uploadFile.getInputStream(), StandardCharsets.UTF_8));
+
+            //ファイルの形式を確認
             fileErrorInfoList = checkFileFormat(bufferedReaderUploadFile);
+            //fileErrorInfoListにエラーの記載があるか
+            if (CollectionUtils.isNotEmpty(fileErrorInfoList)) {
+                //記載がある場合、エラーを表示
+                model.addAttribute("errorMsg", fileErrorInfoList);
+                return "addCollectiveBooks";
+            }
         } catch (IOException e) {
             model.addAttribute("errorMsg", "ファイルの読み込み時にエラーが発生しました。時間を置いてから再度実施ください。");
             return "addCollectiveBooks";

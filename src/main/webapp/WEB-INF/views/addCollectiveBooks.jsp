@@ -38,6 +38,9 @@
             <c:if test="${!empty errorMsg}">
                 <label class="error" style="text-align: center;">${errorMsg}</label>
             </c:if>
+            <c:forEach var="bookInfo" items="${fileErrorInfoList}">
+                <div class="error" style="text-align: center;">${fileErrorInfoList.rowNum}：{fileErrorInfoList.errorContent}</div>
+            </c:forEach>
             <div class="addBookBtn_box">
                 <button class=btn_bulkRegist type="submit" name="upload_file">一括登録</button>
             </div>
