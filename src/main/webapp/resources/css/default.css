@@ -289,7 +289,8 @@ h1 {
     background: #edffed;
 }
 
-.top_line{
+/* ページ内の説明文 */
+.contentsd_escription{
 	display: block;
 	text-align: center;
     margin: 10px 0;

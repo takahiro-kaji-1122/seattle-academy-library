@@ -30,7 +30,7 @@
     </header>
     <main>
         <h1>書籍の一括登録</h1>
-        <label class=top_line>CSVファイルをアップロードすることで書籍を一括で登録できます。</label>
+        <label class=contentsd_escription>CSVファイルをアップロードすることで書籍を一括で登録できます。<br>アップロードには専用のフォーマットを使用してください。</label>
         <form action="<%=request.getContextPath()%>/insertCollectiveBooks" method="post" enctype="multipart/form-data" id="data_upload_form">
             <div class="content_body add_book_content">
                 <input type="file" name="file">
@@ -44,6 +44,9 @@
             <div class="addBookBtn_box">
                 <button class=btn_bulkRegist type="submit" name="upload_file">一括登録</button>
             </div>
+        </form>
+        <form action="<%=request.getContextPath()%>/booksRegisterTemplateDownload" method="get" enctype="multipart/form-data" id="booksRegisterTemplateDownload">
+            <a href="javascript:void(0)" onclick="this.parentNode.submit();" class=contentsd_escription>フォーマットをダウンロード</a>
         </form>
     </main>
 </body>
