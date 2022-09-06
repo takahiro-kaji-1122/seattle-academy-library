@@ -40,10 +40,10 @@
                 <label class="error" style="text-align: center;">${errorMsg}</label>
             </c:if>
             <c:if test="${!empty fileErrorInfoList}">
-                <div class="error" style="display: flex;justify-content: center;">
-                    <ul style="display: inline-block; margin: 0 auto">
+                <div class="bulkRegist_error">
+                    <ul>
                         <c:forEach var="fileErrorInfo" items="${fileErrorInfoList}">
-                            <li style="text-align: left">${fileErrorInfo.rowNum}行目：${fileErrorInfo.colName}${fileErrorInfo.errorContent}</li>
+                            <li>${fileErrorInfo.rowNum}行目：${fileErrorInfo.colName}${fileErrorInfo.errorContent}</li>
                         </c:forEach>
                     </ul>
                 </div>
