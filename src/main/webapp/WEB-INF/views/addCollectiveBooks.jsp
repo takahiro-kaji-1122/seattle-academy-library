@@ -37,7 +37,7 @@
                 <input type="file" name="file">
             </div>
             <c:if test="${!empty errorMsg}">
-                <label class="error" style="text-align: center;">${errorMsg}</label>
+                <label class="error">${errorMsg}</label>
             </c:if>
             <c:if test="${!empty fileErrorInfoList}">
                 <div class="bulkRegist_error">
