@@ -199,7 +199,7 @@ public class AddCollectiveBooksController {
     /**
      * アップロードされたファイルの書籍情報をDBに登録
      * @param bookDtailsInfoList アップロードされたファイルに記載された書籍情報のリスト
-     * @return fileErrorInfoList に引っかかった箇所のリスト
+     * @return fileErrorInfoList エラー箇所のリスト
      */
     public ArrayList<FileErrorInfo> insertBooks(ArrayList<BookDetailsInfo> bookDtailsInfoList) {
         //エラー内容を記録するfileErrorInfoを定義
