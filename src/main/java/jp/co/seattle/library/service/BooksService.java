@@ -80,6 +80,9 @@ public class BooksService {
         //sqlの''となっている箇所をnullに置換
         sql = StringUtils.replace(sql, "\'\'", "null");
 
+        //sqlの'null'となっている箇所をnullに置換
+        sql = StringUtils.replace(sql, "\'null\'", "null");
+
         //SQLの実行
         Integer bookId = jdbcTemplate.queryForObject(sql, Integer.class);
 

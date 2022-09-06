@@ -30,7 +30,8 @@
     </header>
     <main>
         <h1>書籍の一括登録</h1>
-        <label class=contentsd_escription>CSVファイルをアップロードすることで書籍を一括で登録できます。<br>アップロードには専用のフォーマットを使用してください。</label>
+        <label class=contentsd_escription>CSVファイルをアップロードすることで書籍を一括で登録できます。<br>アップロードには専用のフォーマットを使用してください。
+        </label>
         <form action="<%=request.getContextPath()%>/insertCollectiveBooks" method="post" enctype="multipart/form-data" id="data_upload_form">
             <div class="content_body add_book_content">
                 <input type="file" name="file">
@@ -38,9 +39,15 @@
             <c:if test="${!empty errorMsg}">
                 <label class="error" style="text-align: center;">${errorMsg}</label>
             </c:if>
-            <c:forEach var="bookInfo" items="${fileErrorInfoList}">
-                <div class="error" style="text-align: center;">${fileErrorInfoList.rowNum}：{fileErrorInfoList.errorContent}</div>
-            </c:forEach>
+            <c:if test="${!empty fileErrorInfoList}">
+                <div class="error" style="display: flex;justify-content: center;">
+                    <ul style="display: inline-block; margin: 0 auto">
+                        <c:forEach var="fileErrorInfo" items="${fileErrorInfoList}">
+                            <li style="text-align: left">${fileErrorInfo.rowNum}行目：${fileErrorInfo.colName}${fileErrorInfo.errorContent}</li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </c:if>
             <div class="addBookBtn_box">
                 <button class=btn_bulkRegist type="submit" name="upload_file">一括登録</button>
             </div>
