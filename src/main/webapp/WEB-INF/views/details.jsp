@@ -31,6 +31,9 @@
     </header>
     <main>
         <h1>書籍の詳細</h1>
+        <c:if test="${unknownError}">
+            <label class="content_body detail_book_content error">時間を置いてからもう一度お試しください。</label>
+        </c:if>
         <c:if test="${isInsertSuccess}">
             <label class="content_body detail_book_content success">書籍の登録が完了しました</label>
         </c:if>
@@ -51,6 +54,9 @@
                 <div>
                     <c:if test="${bookDetailsInfo.ableLend}">貸し出し可能</c:if>
                     <c:if test="${!bookDetailsInfo.ableLend}">貸し出し中です</c:if>
+                    <c:if test="${isRentedError}">
+                        <label class="content_body detail_book_content error">貸し出し中です</label>
+                    </c:if>
                 </div>
             </div>
             <div class="content_right">
