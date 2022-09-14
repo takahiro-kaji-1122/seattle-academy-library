@@ -136,7 +136,7 @@ public class BooksService {
      */
     public void lendBook(int bookId) {
 
-        String sql = "UPDATE books able_lend = fales WHERE id="
+        String sql = "UPDATE books set able_lend = false WHERE id="
                 + bookId
                 + ";";
 

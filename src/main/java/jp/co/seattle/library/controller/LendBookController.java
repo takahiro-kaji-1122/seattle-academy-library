@@ -32,8 +32,8 @@ public class LendBookController {
      * @return
      */
     @Transactional
-    @RequestMapping(value = "/redBook", method = RequestMethod.GET)
-    public String detailsBook(Locale locale,
+    @RequestMapping(value = "/lendBook", method = RequestMethod.GET)
+    public String lendBook(Locale locale,
             @RequestParam("bookId") Integer bookId,
             @RequestParam(name = "isInsertSuccess", required = false) boolean isInsertSuccess,
             @RequestParam(name = "isEditSuccess", required = false) boolean isEditSuccess,
@@ -45,17 +45,20 @@ public class LendBookController {
             //対象の書籍が貸し出し中である場合
             if (!booksService.getBookInfo(bookId).getAbleLend()) {
                 //貸し出し中と表示
-                model.addAttribute("isRented", true);
+                model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
+                model.addAttribute("isRentedError", true);
                 return "details";
             }
+            //対象書籍を貸し出し状態に変更
             booksService.lendBook(bookId);
         } catch (Exception e) {
+            e.printStackTrace();
+            //エラーを表示
             model.addAttribute("unknownError", true);
             return "details";
         }
 
         model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
-
         return "details";
     }
 }
