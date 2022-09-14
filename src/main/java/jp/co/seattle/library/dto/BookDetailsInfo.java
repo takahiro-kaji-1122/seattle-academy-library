@@ -30,6 +30,8 @@ public class BookDetailsInfo {
 
     private String thumbnailName;
 
+    private Boolean ableLend;
+
     public BookDetailsInfo() {
 
     }
@@ -53,6 +55,29 @@ public class BookDetailsInfo {
         this.isbn = isbn;
         this.thumbnailUrl = thumbnailUrl;
         this.thumbnailName = thumbnailName;
+    }
+
+    public BookDetailsInfo(
+            int bookId,
+            String title,
+            String author,
+            String publisher,
+            String publishDate,
+            String description,
+            String isbn,
+            String thumbnailUrl,
+            String thumbnailName,
+            Boolean ableLend) {
+        this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.publishDate = publishDate;
+        this.description = description;
+        this.isbn = isbn;
+        this.thumbnailUrl = thumbnailUrl;
+        this.thumbnailName = thumbnailName;
+        this.ableLend = ableLend;
     }
 
 }
