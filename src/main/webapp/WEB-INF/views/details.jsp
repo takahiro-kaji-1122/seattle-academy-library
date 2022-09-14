@@ -48,6 +48,10 @@
                         </c:if> <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}">
                     </a>
                 </div>
+                <div>
+                    <c:if test="${bookDetailsInfo.ableLend}">貸し出し可能</c:if>
+                    <c:if test="${!bookDetailsInfo.ableLend}">貸し出し中です</c:if>
+                </div>
             </div>
             <div class="content_right">
                 <div>
