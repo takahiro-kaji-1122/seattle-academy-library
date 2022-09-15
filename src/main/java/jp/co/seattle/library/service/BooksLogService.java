@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  *  books_satusテーブルに関する処理を実装する
  */
 @Service
-public class BooksSatusService {
+public class BooksLogService {
     final static Logger logger = LoggerFactory.getLogger(BooksService.class);
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -22,7 +22,21 @@ public class BooksSatusService {
      * 
      * @param bookId 書籍ID
      */
-    public void deleteBookStatus(int bookId) {
+    public void deleteBookLog(int bookId) {
+
+        String sql = "DELETE FROM books_log WHERE book_id="
+                + bookId
+                + ";";
+
+        jdbcTemplate.update(sql);
+    }
+
+    /**
+     * 書籍の状態を
+     * 
+     * @param bookId 書籍ID
+     */
+    public void insertBookLog(int bookId) {
 
         String sql = "DELETE FROM books_satus WHERE book_id="
                 + bookId
