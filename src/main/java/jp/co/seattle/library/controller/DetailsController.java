@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.seattle.library.service.BooksService;
+import jp.co.seattle.library.service.BooksStatusService;
 
 /**
  * 詳細表示コントローラー
@@ -23,6 +24,8 @@ public class DetailsController {
 
     @Autowired
     private BooksService booksService;
+    @Autowired
+    private BooksStatusService booksLogService;
 
     /**
      * 詳細画面に遷移する
@@ -44,6 +47,7 @@ public class DetailsController {
         model.addAttribute("isInsertSuccess", isInsertSuccess);
         model.addAttribute("isEditSuccess", isEditSuccess);
         model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
+        model.addAttribute("latestBookLogInfo", booksLogService.getLatestBookStatusInfo(bookId));
 
         return "details";
     }

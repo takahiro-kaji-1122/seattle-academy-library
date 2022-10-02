@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jp.co.seattle.library.service.BooksLogService;
 import jp.co.seattle.library.service.BooksService;
+import jp.co.seattle.library.service.BooksStatusService;
 
 /**
  * 削除コントローラー
@@ -27,7 +27,7 @@ public class DeleteBookController {
     private BooksService booksService;
 
     @Autowired
-    private BooksLogService booksLogService;
+    private BooksStatusService booksLogService;
 
     /**
      * 対象書籍を削除する
