@@ -25,7 +25,7 @@ public class DetailsController {
     @Autowired
     private BooksService booksService;
     @Autowired
-    private BooksStatusService booksLogService;
+    private BooksStatusService booksStatusService;
 
     /**
      * 詳細画面に遷移する
@@ -47,7 +47,7 @@ public class DetailsController {
         model.addAttribute("isInsertSuccess", isInsertSuccess);
         model.addAttribute("isEditSuccess", isEditSuccess);
         model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
-        model.addAttribute("latestBookLogInfo", booksLogService.getLatestBookStatusInfo(bookId));
+        model.addAttribute("latestBookStatusInfo", booksStatusService.getLatestBookStatusInfo(bookId));
 
         return "details";
     }
