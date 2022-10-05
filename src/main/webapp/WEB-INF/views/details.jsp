@@ -52,8 +52,8 @@
                     </a>
                 </div>
                 <div>
-                    <c:if test="${latestBookLogInfo.ableLend}">貸し出し可能</c:if>
-                    <c:if test="${!latestBookLogInfo.ableLend}">貸し出し中です</c:if>
+                    <c:if test="${latestBookStatusInfo.ableLend}">貸し出し可能</c:if>
+                    <c:if test="${!latestBookStatusInfo.ableLend}">貸し出し中です</c:if>
                     <c:if test="${isLendError}">
                         <label class="content_body detail_book_content error">貸し出し中です</label>
                     </c:if>
