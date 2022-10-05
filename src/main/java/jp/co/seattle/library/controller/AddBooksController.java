@@ -16,7 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.seattle.library.dto.BookDetailsInfo;
+import jp.co.seattle.library.dto.BookStatusInfo;
 import jp.co.seattle.library.service.BooksService;
+import jp.co.seattle.library.service.BooksStatusService;
 import jp.co.seattle.library.service.ThumbnailService;
 
 /**
@@ -31,6 +33,9 @@ public class AddBooksController {
 
     @Autowired
     private ThumbnailService thumbnailService;
+
+    @Autowired
+    private BooksStatusService booksStatusService;
 
     @RequestMapping(value = "/addBook", method = RequestMethod.GET) //value＝actionで指定したパラメータ
     //RequestParamでname属性を取得
@@ -137,6 +142,10 @@ public class AddBooksController {
 
         try {
             newBookDetailsInfo.setBookId(booksService.registBook(newBookDetailsInfo));
+            //貸出可能ステータスで登録
+            BookStatusInfo newBookLogInfo = new BookStatusInfo(newBookDetailsInfo.getBookId(), true);
+            booksStatusService.registBookStatus(newBookLogInfo);
+
         } catch (Exception e) {
 
             //異常終了時の処理

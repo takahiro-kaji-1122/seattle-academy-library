@@ -129,17 +129,4 @@ public class BooksService {
         jdbcTemplate.update(sql);
     }
 
-    /**
-     * 書籍を貸し出し状態にする
-     * 
-     * @param bookId 書籍ID
-     */
-    public void lendBook(int bookId) {
-
-        String sql = "UPDATE books set able_lend = false WHERE id="
-                + bookId
-                + ";";
-
-        jdbcTemplate.update(sql);
-    }
 }

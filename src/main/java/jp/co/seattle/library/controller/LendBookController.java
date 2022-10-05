@@ -24,7 +24,7 @@ public class LendBookController {
     final static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
-    private BooksStatusService booksLogService;
+    private BooksStatusService booksStatusService;
     @Autowired
     private BooksService booksService;
 
@@ -45,22 +45,22 @@ public class LendBookController {
 
         try {
             //書籍の最新状態を取得
-            BookStatusInfo latestBookLogInfo = booksLogService.getLatestBookStatusInfo(bookId);
+            BookStatusInfo latestBookStatusInfo = booksStatusService.getLatestBookStatusInfo(bookId);
 
             //対象の書籍が貸し出し中である場合
-            if (!latestBookLogInfo.getAbleLend()) {
+            if (!latestBookStatusInfo.getAbleLend()) {
                 //貸し出し中と表示
                 model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
-                model.addAttribute("latestBookLogInfo", latestBookLogInfo);
+                model.addAttribute("latestBookStatusInfo", latestBookStatusInfo);
                 model.addAttribute("isLendError", true);
                 return "details";
             }
             //対象書籍を貸し出し状態に変更
-            BookStatusInfo bookLogInfo = new BookStatusInfo(bookId, false);
-            booksLogService.registBookStatus(bookLogInfo);
+            BookStatusInfo bookStatusInfo = new BookStatusInfo(bookId, false);
+            booksStatusService.registBookStatus(bookStatusInfo);
 
             model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
-            model.addAttribute("latestBookLogInfo", booksLogService.getLatestBookStatusInfo(bookId));
+            model.addAttribute("latestBookStatusInfo", booksStatusService.getLatestBookStatusInfo(bookId));
             return "details";
         } catch (Exception e) {
             //エラー、例外が出た場合
