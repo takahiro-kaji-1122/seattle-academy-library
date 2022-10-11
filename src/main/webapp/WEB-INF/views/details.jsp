@@ -93,12 +93,22 @@
             </div>
         </div>
         <div class="edtDelBookBtn_box">
-            <form method="get" action="lendBook">
-                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook">借りる</button>
-            </form>
-            <form method="get" action="returnBook">
-                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_returnBook">返す</button>
-            </form>
+            <c:if test="${latestBookStatusInfo.ableLend}">
+                <form method="get" action="lendBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook">借りる</button>
+                </form>
+                <form method="get" action="returnBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_returnBook" disabled>返す</button>
+                </form>
+            </c:if>
+            <c:if test="${!latestBookStatusInfo.ableLend}">
+                <form method="get" action="lendBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook" disabled>借りる</button>
+                </form>
+                <form method="get" action="returnBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_returnBook">返す</button>
+                </form>
+            </c:if>
             <form method="get" action="editBook">
                 <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_editBook">編集</button>
             </form>
