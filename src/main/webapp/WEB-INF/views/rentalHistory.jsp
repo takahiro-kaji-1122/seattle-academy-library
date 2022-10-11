@@ -30,22 +30,41 @@
         </div>
     </header>
     <main>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">イベント名</th>
-                    <th scope="col">開催日</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>UI/UXデザイナーLT会 - vol.2</td>
-                    <td>3/3</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">書籍名</th>
+                                <th scope="col">貸出日</th>
+                                <th scope="col">返却日</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="latestBooksStatus" items="${latestBooksStatusList}">
+                                <c:if test="${latestBooksStatus.ableLend}">
+                                    <tr>
+                                        <th scope="row"><a href="<%=request.getContextPath()%>/details?bookId=${latestBooksStatus.bookId}">${latestBooksStatus.title}</a></th>
+                                        <td></td>
+                                        <td>${latestBooksStatus.updDate}</td>
+                                    </tr>
+                                </c:if>
+                                <c:if test="${!latestBooksStatus.ableLend}">
+                                    <tr>
+                                        <th scope="row"><a href="<%=request.getContextPath()%>/details?bookId=${latestBooksStatus.bookId}">${latestBooksStatus.title}</a></th>
+                                        <td>${latestBooksStatus.updDate}</td>
+                                        <td></td>
+                                    </tr>
+                                </c:if>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
     </main>
 </body>
 </html>

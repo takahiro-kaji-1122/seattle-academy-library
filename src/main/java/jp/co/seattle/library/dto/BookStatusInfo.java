@@ -15,6 +15,8 @@ public class BookStatusInfo {
 
     private int bookId;
 
+    private String title;
+
     private Boolean ableLend;
 
     private String updDate;
