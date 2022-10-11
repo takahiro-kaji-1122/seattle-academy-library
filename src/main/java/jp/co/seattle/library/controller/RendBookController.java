@@ -17,7 +17,7 @@ import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.BooksStatusService;
 
 /**
- * 本の貸し出しコントローラー
+ * 本の返却コントローラー
  */
 @Controller
 public class RendBookController {
@@ -47,15 +47,15 @@ public class RendBookController {
             //書籍の最新状態を取得
             BookStatusInfo latestBookStatusInfo = booksStatusService.getLatestBookStatusInfo(bookId);
 
-            //対象の書籍が貸し出し中である場合
+            //対象の書籍が返却済みである場合
             if (latestBookStatusInfo.getAbleLend()) {
-                //貸し出し中と表示
+                //返却済みと表示
                 model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
                 model.addAttribute("latestBookStatusInfo", latestBookStatusInfo);
                 model.addAttribute("isRternedError", true);
                 return "details";
             }
-            //対象書籍を貸し出し状態に変更
+            //対象書籍を返却状態に変更
             BookStatusInfo bookStatusInfo = new BookStatusInfo(bookId, true);
             booksStatusService.registBookStatus(bookStatusInfo);
 
