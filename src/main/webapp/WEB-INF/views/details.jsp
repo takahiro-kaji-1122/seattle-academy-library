@@ -34,6 +34,9 @@
         <c:if test="${unknownError}">
             <label class="content_body detail_book_content error">時間を置いてからもう一度お試しください。</label>
         </c:if>
+        <c:if test="${isDeleteError}">
+            <label class="content_body detail_book_content error">貸し出し中です。返却後に削除してください。</label>
+        </c:if>
         <c:if test="${isInsertSuccess}">
             <label class="content_body detail_book_content success">書籍の登録が完了しました</label>
         </c:if>
@@ -57,7 +60,7 @@
                     <c:if test="${isLendError}">
                         <label class="content_body detail_book_content error">貸し出し中です</label>
                     </c:if>
-                                        <c:if test="${isRternedError}">
+                    <c:if test="${isRternedError}">
                         <label class="content_body detail_book_content error">返却済みです</label>
                     </c:if>
                 </div>
