@@ -33,8 +33,8 @@
         </c:if>
         <h1>Home</h1>
         <a href="<%=request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a> <a href="<%=request.getContextPath()%>/addCollectiveBooks" class="btn_bulk_book">書籍の追加</a>
-            <form method="post" action="searchBook" class="search_book">
-                <input type="text" class="search_box" id="searchBookName" name="searchBookName" required> <input type="submit" class="search1" value="検索">
+            <form method="get" action="searchBook" class="search_book">
+                <input type="text" class="search_box" id="searchedBookName" name="searchedBookName" required> <input type="submit" class="search1" value="検索">
             </form>
         <div class="content_body">
             <c:if test="${!empty resultMessage}">
