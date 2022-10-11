@@ -103,7 +103,8 @@ public class BooksStatusService {
                 + "                    title"
                 + "                FROM books)"
                 + "                AS booksC"
-                + "    ON books_statusA.book_id = booksC.id;";
+                + "    ON books_statusA.book_id = booksC.id"
+                + " ORDER by title;";
         List<BookStatusInfo> latestBooksStatusList = jdbcTemplate.query(sql, new BookStatusInfoRowMapper());
 
         return latestBooksStatusList;
