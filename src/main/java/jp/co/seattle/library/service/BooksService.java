@@ -2,6 +2,7 @@ package jp.co.seattle.library.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,17 +61,29 @@ public class BooksService {
      * 書籍を登録する
      *
      * @param bookInfo 書籍情報
+     * @return bookId 登録した書籍ID
      */
-    public void registBook(BookDetailsInfo bookInfo) {
+    public int registBook(BookDetailsInfo bookInfo) {
 
-        String sql = "INSERT INTO books (title, author,publisher,thumbnail_name,thumbnail_url,reg_date,upd_date) VALUES ('"
-                + bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "','"
+        String sql = "INSERT INTO books (title, author, publisher, publish_date, description, isbn, thumbnail_name, thumbnail_url, reg_date, upd_date) VALUES ('"
+                + bookInfo.getTitle() + "','"
+                + bookInfo.getAuthor() + "','"
+                + bookInfo.getPublisher() + "','"
+                + bookInfo.getPublishDate() + "','"
+                + bookInfo.getDescription() + "','"
+                + bookInfo.getIsbn() + "','"
                 + bookInfo.getThumbnailName() + "','"
                 + bookInfo.getThumbnailUrl() + "',"
                 + "now(),"
-                + "now())";
+                + "now()) RETURNING id";
 
-        jdbcTemplate.update(sql);
+        //sqlの''となっている箇所をnullに置換
+        sql = StringUtils.replace(sql, "\'\'", "null");
+
+        //SQLの実行
+        Integer bookId = jdbcTemplate.queryForObject(sql, Integer.class);
+
+        return bookId;
     }
 
     /**

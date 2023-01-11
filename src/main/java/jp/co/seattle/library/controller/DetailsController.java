@@ -32,13 +32,15 @@ public class DetailsController {
      * @return
      */
     @Transactional
-    @RequestMapping(value = "/details", method = RequestMethod.POST)
+    @RequestMapping(value = "/details", method = RequestMethod.GET)
     public String detailsBook(Locale locale,
             @RequestParam("bookId") Integer bookId,
+            @RequestParam(name = "isInsertSuccess", required = false) boolean isInsertSuccess,
             Model model) {
         // デバッグ用ログ
         logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
 
+        model.addAttribute("isInsertSuccess", isInsertSuccess);
         model.addAttribute("bookDetailsInfo", bookdService.getBookInfo(bookId));
 
         return "details";
