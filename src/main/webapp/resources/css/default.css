@@ -113,6 +113,22 @@ input[type=button].primary {
     border-radius: 0.2em;
     background: #ffeeee;
 }
+
+.bulkRegist_error{
+	display: block;
+    margin: 10px 0;
+    padding: 10px;
+    font-weight: bold;
+    color: #cc0000;
+    border:solid 1px #cc0000;
+    border-radius: 0.2em;
+    background: #ffeeee;
+    display: flex;
+    justify-content: center;
+}
+
+
+
 /* 入力フォームのパーツ：ボタン */
 .button {
     display: block;
@@ -287,4 +303,14 @@ h1 {
     border:solid 1px #98fb98;
     border-radius: 0.2em;
     background: #edffed;
+}
+
+/* ページ内の説明文 */
+.contentsd_escription{
+	display: block;
+	text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    font-weight: bold;
+
 }
