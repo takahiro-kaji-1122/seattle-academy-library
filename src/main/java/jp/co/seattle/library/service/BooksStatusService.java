@@ -43,9 +43,26 @@ public class BooksStatusService {
      */
     public void registBookStatus(BookStatusInfo bookStatusInfo) {
 
-        String sql = "INSERT INTO books_status (book_id, able_lend, upd_date) VALUES ('"
+        String sql = "INSERT INTO books_status (book_id, able_lend, rental_user, upd_date) VALUES ('"
                 + bookStatusInfo.getBookId() + "','"
-                + bookStatusInfo.getAbleLend() + "',"
+                + bookStatusInfo.getAbleLend() + "',NULL,"
+                + "now())";
+
+        //SQLの実行
+        jdbcTemplate.update(sql);
+    }
+
+    /**
+     * 書籍に貸出情報を登録する
+     *
+     * @param bookInfo 書籍情報
+     */
+    public void registBookStatus(BookStatusInfo bookStatusInfo, String username) {
+
+        String sql = "INSERT INTO books_status (book_id, able_lend, rental_user, upd_date) VALUES ('"
+                + bookStatusInfo.getBookId() + "','"
+                + bookStatusInfo.getAbleLend() + "','"
+                + username + "',"
                 + "now())";
 
         //SQLの実行
@@ -80,7 +97,7 @@ public class BooksStatusService {
     }
 
     /**
-     * 前書籍の最新ステータスを取得
+     * 書籍の最新ステータスを取得
      * 
      * @return latestBooksStatusList 各書籍の最新ステータス
      */

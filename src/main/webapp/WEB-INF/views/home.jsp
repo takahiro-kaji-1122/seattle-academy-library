@@ -20,7 +20,7 @@
         <div class="right">
             <ul>
                 <li><a href="<%=request.getContextPath()%>/home" class="menu">Home</a></li>
-                <li><a href="<%=request.getContextPath()%>/">ログアウト</a></li>
+                <li><a tabindex="-1" style="pointer-events: none">${username}</a><a href="<%=request.getContextPath()%>/logout">ログアウト</a></li>
             </ul>
         </div>
     </header>

@@ -19,6 +19,7 @@ public class BookStatusInfoRowMapper implements RowMapper<BookStatusInfo> {
         bookLogInfo.setBookId(rs.getInt("book_id"));
         bookLogInfo.setTitle(rs.getString("title"));
         bookLogInfo.setAbleLend(rs.getBoolean("able_lend"));
+        bookLogInfo.setRentalUser(rs.getString("rental_user"));
         bookLogInfo.setUpdDate(rs.getString("upd_date"));
         return bookLogInfo;
     }

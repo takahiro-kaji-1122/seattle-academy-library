@@ -19,6 +19,8 @@ public class BookStatusInfo {
 
     private Boolean ableLend;
 
+    private String rentalUser;
+
     private String updDate;
 
     public BookStatusInfo() {
