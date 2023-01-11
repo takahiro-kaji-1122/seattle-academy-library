@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jp.co.seattle.library.dto.BookStatusInfo;
 import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.BooksStatusService;
 
@@ -49,12 +50,23 @@ public class DeleteBookController {
         int deleteBookId = bookId;
 
         try {
+            //書籍の最新状態を取得
+            BookStatusInfo latestBookStatusInfo = booksStatusService.getLatestBookStatusInfo(bookId);
+
+            //対象の書籍が貸し出し状態である場合
+            if (!latestBookStatusInfo.getAbleLend()) {
+                //貸し出し中です。返却後に削除してください。と表示
+                model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
+                model.addAttribute("latestBookStatusInfo", latestBookStatusInfo);
+                model.addAttribute("isDeleteError", true);
+                return "details";
+            }
             booksStatusService.deleteBookStatus(deleteBookId);
             booksService.deleteBook(deleteBookId);
         } catch (Exception e) {
             //何かしらの例外やエラーが出た場合、エラーを表示
             redirectAttributes.addFlashAttribute("unknownError", true);
-            return "redirect:home";
+            return "details";
         }
 
         redirectAttributes.addFlashAttribute("isSuccessDelete", true);

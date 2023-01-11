@@ -34,6 +34,9 @@
         <c:if test="${unknownError}">
             <label class="content_body detail_book_content error">時間を置いてからもう一度お試しください。</label>
         </c:if>
+        <c:if test="${isDeleteError}">
+            <label class="content_body detail_book_content error">貸し出し中です。返却後に削除してください。</label>
+        </c:if>
         <c:if test="${isInsertSuccess}">
             <label class="content_body detail_book_content success">書籍の登録が完了しました</label>
         </c:if>
@@ -57,7 +60,7 @@
                     <c:if test="${isLendError}">
                         <label class="content_body detail_book_content error">貸し出し中です</label>
                     </c:if>
-                                        <c:if test="${isRternedError}">
+                    <c:if test="${isRternedError}">
                         <label class="content_body detail_book_content error">返却済みです</label>
                     </c:if>
                 </div>
@@ -90,12 +93,22 @@
             </div>
         </div>
         <div class="edtDelBookBtn_box">
-            <form method="get" action="lendBook">
-                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook">借りる</button>
-            </form>
-            <form method="get" action="returnBook">
-                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_returnBook">返す</button>
-            </form>
+            <c:if test="${latestBookStatusInfo.ableLend}">
+                <form method="get" action="lendBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook">借りる</button>
+                </form>
+                <form method="get" action="returnBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_returnBook" disabled>返す</button>
+                </form>
+            </c:if>
+            <c:if test="${!latestBookStatusInfo.ableLend}">
+                <form method="get" action="lendBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook" disabled>借りる</button>
+                </form>
+                <form method="get" action="returnBook">
+                    <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_returnBook">返す</button>
+                </form>
+            </c:if>
             <form method="get" action="editBook">
                 <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_editBook">編集</button>
             </form>
