@@ -27,7 +27,7 @@ public class DeleteBookController {
     private BooksService booksService;
 
     @Autowired
-    private BooksStatusService booksLogService;
+    private BooksStatusService booksStatusService;
 
     /**
      * 対象書籍を削除する
@@ -49,7 +49,7 @@ public class DeleteBookController {
         int deleteBookId = bookId;
 
         try {
-            booksLogService.deleteBookStatus(deleteBookId);
+            booksStatusService.deleteBookStatus(deleteBookId);
             booksService.deleteBook(deleteBookId);
         } catch (Exception e) {
             //何かしらの例外やエラーが出た場合、エラーを表示
