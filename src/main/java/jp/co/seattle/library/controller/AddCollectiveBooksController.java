@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.seattle.library.dto.BookDetailsInfo;
+import jp.co.seattle.library.dto.BookStatusInfo;
 import jp.co.seattle.library.dto.FileErrorInfo;
 import jp.co.seattle.library.service.BooksService;
+import jp.co.seattle.library.service.BooksStatusService;
 
 /**
  * Handles requests for the application home page.
@@ -33,6 +35,9 @@ public class AddCollectiveBooksController {
 
     @Autowired
     private BooksService booksService;
+
+    @Autowired
+    private BooksStatusService booksStatusService;
 
     @RequestMapping(value = "/addCollectiveBooks", method = RequestMethod.GET) //value＝actionで指定したパラメータ
     //RequestParamでname属性を取得
@@ -212,7 +217,7 @@ public class AddCollectiveBooksController {
         long lineNum = 0;
 
         //最終行までループ
-        for (BookDetailsInfo bookDtailsInfo : bookDtailsInfoList) {
+        for (BookDetailsInfo bookDetailsInfo : bookDtailsInfoList) {
             //行数に１追加
             lineNum++;
             //１行目のチェックの場合
@@ -223,7 +228,11 @@ public class AddCollectiveBooksController {
 
             try {
                 //処理中の行の書籍情報をDBに登録
-                booksService.registBook(bookDtailsInfo);
+                bookDetailsInfo.setBookId(booksService.registBook(bookDetailsInfo));
+                //貸出可能ステータスで登録
+                BookStatusInfo bookLogInfo = new BookStatusInfo(bookDetailsInfo.getBookId(), true);
+                booksStatusService.registBookStatus(bookLogInfo);
+
             } catch (Exception e) {
                 //fileErrorInfoListにエラーを追加
                 fileErrorInfoList.add(new FileErrorInfo(lineNum, insertError));

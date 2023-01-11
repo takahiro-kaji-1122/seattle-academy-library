@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.seattle.library.service.BooksService;
+import jp.co.seattle.library.service.BooksStatusService;
 
 /**
  * 削除コントローラー
@@ -24,6 +25,9 @@ public class DeleteBookController {
 
     @Autowired
     private BooksService booksService;
+
+    @Autowired
+    private BooksStatusService booksLogService;
 
     /**
      * 対象書籍を削除する
@@ -45,6 +49,7 @@ public class DeleteBookController {
         int deleteBookId = bookId;
 
         try {
+            booksLogService.deleteBookStatus(deleteBookId);
             booksService.deleteBook(deleteBookId);
         } catch (Exception e) {
             //何かしらの例外やエラーが出た場合、エラーを表示

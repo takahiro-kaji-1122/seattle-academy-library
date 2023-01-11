@@ -31,6 +31,9 @@
     </header>
     <main>
         <h1>書籍の詳細</h1>
+        <c:if test="${unknownError}">
+            <label class="content_body detail_book_content error">時間を置いてからもう一度お試しください。</label>
+        </c:if>
         <c:if test="${isInsertSuccess}">
             <label class="content_body detail_book_content success">書籍の登録が完了しました</label>
         </c:if>
@@ -47,6 +50,13 @@
                             <img class="book_noimg" src="${bookDetailsInfo.thumbnailUrl}">
                         </c:if> <input type="hidden" name="bookId" value="${bookDetailsInfo.bookId}">
                     </a>
+                </div>
+                <div>
+                    <c:if test="${latestBookStatusInfo.ableLend}">貸し出し可能</c:if>
+                    <c:if test="${!latestBookStatusInfo.ableLend}">貸し出し中です</c:if>
+                    <c:if test="${isLendError}">
+                        <label class="content_body detail_book_content error">貸し出し中です</label>
+                    </c:if>
                 </div>
             </div>
             <div class="content_right">
@@ -77,6 +87,9 @@
             </div>
         </div>
         <div class="edtDelBookBtn_box">
+            <form method="get" action="lendBook">
+                <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_rentBook">借りる</button>
+            </form>
             <form method="get" action="editBook">
                 <button type="submit" value="${bookDetailsInfo.bookId}" name="bookId" class="btn_editBook">編集</button>
             </form>
