@@ -2,6 +2,10 @@ package jp.co.seattle.library.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.seattle.library.dto.BookInfo;
 import jp.co.seattle.library.service.BooksService;
@@ -31,8 +36,23 @@ public class HomeController {
      * @return ホーム画面
      */
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String transitionHome(Model model) {
+    public String transitionHome(Model model,
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         List<BookInfo> bookList;
+        //セッションからユーザー名を取得する
+        HttpSession session = request.getSession(false);
+
+        //セッションがない場合
+        if (session == null) {
+
+            //ログイン画面に遷移する
+            return "redirect:/";
+        }
+
+        //セッションからユーザ名を取得する
+        String username = (String) session.getAttribute("username");
         //書籍情報が0件の場合
         try {
             bookList = booksService.getBookList();
@@ -41,9 +61,11 @@ public class HomeController {
             return "home";
         }
         if (CollectionUtils.isEmpty(bookList)) {
+            model.addAttribute("username", username);
             model.addAttribute("notExistBookData", true);
             return "home";
         }
+        model.addAttribute("username", username);
         model.addAttribute("bookList", bookList);
         return "home";
     }

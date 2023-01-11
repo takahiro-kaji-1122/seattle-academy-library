@@ -2,6 +2,9 @@ package jp.co.seattle.library.controller;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +42,9 @@ public class RendBookController {
     @RequestMapping(value = "/returnBook", method = RequestMethod.GET)
     public String lendBook(Locale locale,
             @RequestParam("bookId") Integer bookId,
-            Model model) {
+            Model model,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         // デバッグ用ログ
         logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
 

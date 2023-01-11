@@ -1,5 +1,9 @@
 package jp.co.seattle.library.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.seattle.library.dto.UserInfo;
-import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.UsersService;
 
 /**
@@ -23,12 +26,22 @@ public class LoginController {
     final static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
-    private BooksService booksService;
-    @Autowired
     private UsersService usersService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String first(Model model) {
+    public String first(Model model,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        // セッションが存在しない場合はnullを返却
+        HttpSession session = request.getSession(false);
+
+        // セッションがある場合
+        if (session != null) {
+            //すでにログインされているので、home画面に遷移する
+            return "redirect:home";
+        }
+
         return "login"; //jspファイル名
     }
 
@@ -44,8 +57,11 @@ public class LoginController {
     public String login(
             @RequestParam("email") String email,
             @RequestParam("password") String password,
-            Model model) {
+            Model model,
+            HttpServletRequest request,
+            HttpServletResponse response) {
 
+        // ログイン処理を実施する
         UserInfo selectedUserInfo;
         // StringUtilsメールアドレスの組み合わせ存在チェック実装
         try {
@@ -54,6 +70,7 @@ public class LoginController {
         } catch (EmptyResultDataAccessException e) {
             //入力されたemailが存在しない場合、エラーを表示
             model.addAttribute("isNotExistAccount", true);
+
             return "login";
         } catch (Exception e) {
             //何かしらの例外やエラーが出た場合、エラーを表示
@@ -61,11 +78,20 @@ public class LoginController {
             return "login";
         }
         if (StringUtils.equals(password, selectedUserInfo.getPassword())) {
+            //// セッションが存在しない場合はnullを返却
+            HttpSession session = request.getSession(false);
+            //セッションを開始する
+            session = request.getSession(true);
+            //セッションにメールアドレスを記録する
+            session.setAttribute("username", email);
+
             // homeへリダイレクトして、transitionHomeを作動させる
-            return "redirect:home";
+            return "redirect:/home";
         }
+
         //emailとpasswordの組み合わせが一致しないエラーの表示
         model.addAttribute("notMatchPassword", true);
         return "login";
+
     }
 }

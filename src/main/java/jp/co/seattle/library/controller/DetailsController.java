@@ -2,6 +2,9 @@ package jp.co.seattle.library.controller;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +43,9 @@ public class DetailsController {
             @RequestParam("bookId") Integer bookId,
             @RequestParam(name = "isInsertSuccess", required = false) boolean isInsertSuccess,
             @RequestParam(name = "isEditSuccess", required = false) boolean isEditSuccess,
-            Model model) {
+            Model model,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         // デバッグ用ログ
         logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
 
