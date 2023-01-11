@@ -22,7 +22,7 @@ public class DetailsController {
     final static Logger logger = LoggerFactory.getLogger(BooksService.class);
 
     @Autowired
-    private BooksService bookdService;
+    private BooksService booksService;
 
     /**
      * 詳細画面に遷移する
@@ -36,12 +36,14 @@ public class DetailsController {
     public String detailsBook(Locale locale,
             @RequestParam("bookId") Integer bookId,
             @RequestParam(name = "isInsertSuccess", required = false) boolean isInsertSuccess,
+            @RequestParam(name = "isEditSuccess", required = false) boolean isEditSuccess,
             Model model) {
         // デバッグ用ログ
         logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
 
         model.addAttribute("isInsertSuccess", isInsertSuccess);
-        model.addAttribute("bookDetailsInfo", bookdService.getBookInfo(bookId));
+        model.addAttribute("isEditSuccess", isEditSuccess);
+        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
 
         return "details";
     }

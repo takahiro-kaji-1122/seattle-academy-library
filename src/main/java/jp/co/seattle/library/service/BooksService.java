@@ -87,6 +87,32 @@ public class BooksService {
     }
 
     /**
+     * 書籍を更新する
+     *
+     * @param bookInfo 書籍情報
+     * @return bookId 編集した書籍ID
+     */
+    public void editBook(BookDetailsInfo bookInfo) {
+
+        String sql = "UPDATE books SET "
+                + "title = '" + bookInfo.getTitle() + "',"
+                + "author = '" + bookInfo.getAuthor() + "',"
+                + "publisher = '" + bookInfo.getPublisher() + "',"
+                + "publish_date = '" + bookInfo.getPublishDate() + "',"
+                + "description = '" + bookInfo.getDescription() + "',"
+                + "isbn = '" + bookInfo.getIsbn() + "',"
+                + "upd_date = now() "
+                + "WHERE id =" + bookInfo.getBookId();
+
+        //sqlの''となっている箇所をnullに置換
+        sql = StringUtils.replace(sql, "\'\'", "null");
+
+        //SQLの実行
+        jdbcTemplate.update(sql);
+
+    }
+
+    /**
      * 書籍IDに紐づく書籍を削除する
      * 
      * @param bookId 書籍ID
