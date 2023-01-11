@@ -1,5 +1,7 @@
 package jp.co.seattle.library.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,14 +60,55 @@ public class BooksStatusService {
      */
     public BookStatusInfo getLatestBookStatusInfo(int bookId) {
 
-        String sql = "SELECT * FROM books_status "
-                + "where book_id =" + bookId + " and upd_date =(select max(upd_date) from books_status WHERE book_id = "
-                + bookId + ")";
+        String sql = "SELECT * FROM books_status AS books_statusA"
+                + "    INNER JOIN (SELECT "
+                + "                    id,"
+                + "                    title"
+                + "                FROM"
+                + "                    books)"
+                + "                AS booksB"
+                + "    ON books_statusA.book_id = booksB.id"
+                + "    and book_id =" + bookId
+                + "    and upd_date =(select max(upd_date) "
+                + "        from books_status "
+                + "        WHERE book_id = " + bookId + ")";
 
         //SQLの実行
         BookStatusInfo latestLog = jdbcTemplate.queryForObject(sql, new BookStatusInfoRowMapper());
 
         return latestLog;
+    }
+
+    /**
+     * 前書籍の最新ステータスを取得
+     * 
+     * @return latestBooksStatusList 各書籍の最新ステータス
+     */
+    public List<BookStatusInfo> getLatestBooksStatusLis() {
+        String sql = "SELECT"
+                + "    books_statusA.id,books_statusA.book_id ,able_lend ,upd_date ,title"
+                + " FROM"
+                + "    books_status AS books_statusA"
+                + "    INNER JOIN (SELECT "
+                + "                    book_id,"
+                + "                    MAX(upd_date) AS latest_upd_date"
+                + "                FROM"
+                + "                    books_status"
+                + "                GROUP BY"
+                + "                    book_id) AS books_statusB"
+                + "    ON books_statusA.book_id = books_statusB.book_id"
+                + "    AND books_statusA.upd_date = books_statusB.latest_upd_date"
+                + "    INNER JOIN (SELECT "
+                + "                    id,"
+                + "                    title"
+                + "                FROM books)"
+                + "                AS booksC"
+                + "    ON books_statusA.book_id = booksC.id"
+                + " ORDER by title;";
+        List<BookStatusInfo> latestBooksStatusList = jdbcTemplate.query(sql, new BookStatusInfoRowMapper());
+
+        return latestBooksStatusList;
+
     }
 
 }

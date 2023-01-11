@@ -23,8 +23,8 @@
 }
 /* リンクボタン：通常 */
 a {
-    color: #707070;
-    text-decoration: none;
+    /* color: #707070; */
+    /* text-decoration: none; */
     cursor: pointer;
 }
 /* リンクボタン：優先 */
@@ -37,6 +37,7 @@ a.warning {
 }
 /* ロゴ・マーク：マーク */
 .mark {
+	padding: 0em;
     width : 48px;
     height: 48px;
     border-style: none;

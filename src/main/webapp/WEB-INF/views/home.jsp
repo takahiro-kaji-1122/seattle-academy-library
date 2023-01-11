@@ -32,10 +32,10 @@
             <label class="success">書籍を削除しました</label>
         </c:if>
         <h1>Home</h1>
-        <a href="<%=request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a> <a href="<%=request.getContextPath()%>/addCollectiveBooks" class="btn_bulk_book">書籍の追加</a>
-            <form method="get" action="searchBook" class="search_book">
-                <input type="text" class="search_box" id="searchedBookName" name="searchedBookName" required> <input type="submit" class="search1" value="検索">
-            </form>
+        <a href="<%=request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a> <a href="<%=request.getContextPath()%>/addCollectiveBooks" class="btn_bulk_book">書籍の追加</a><a href="<%=request.getContextPath()%>/rentalHistory" class="btn_history_book">書籍の閲覧履歴</a>
+        <form method="get" action="searchBook" class="search_book">
+            <input type="text" class="search_box" id="searchedBookName" name="searchedBookName" required> <input type="submit" class="search1" value="検索">
+        </form>
         <div class="content_body">
             <c:if test="${!empty resultMessage}">
                 <div class="error_msg">${resultMessage}</div>
