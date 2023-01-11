@@ -26,7 +26,7 @@ public class BooksService {
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * 書籍リストを取得する
+     * 書籍の全件リストを取得する
      *
      * @return 書籍リスト
      */
@@ -38,6 +38,22 @@ public class BooksService {
                 new BookInfoRowMapper());
 
         return getedBookList;
+    }
+
+    /**
+     * 書籍の検索結果リストを取得する
+     *
+     * @return 書籍リスト
+     */
+    public List<BookInfo> getSearchedBookList(String searchedBookName) {
+
+        //取得すべきカラムを書籍名（title）の昇順で取得
+        List<BookInfo> searchedBookList = jdbcTemplate.query(
+                "select id,title,author,publisher,publish_date,thumbnail_url from books where title like '%"
+                        + searchedBookName + "%' order by title;",
+                new BookInfoRowMapper());
+
+        return searchedBookList;
     }
 
     /**
